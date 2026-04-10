@@ -21,8 +21,8 @@ export function setupScene(canvas: HTMLCanvasElement): void {
     0.1,
     100,
   );
-  _camera.position.set(0, 1.5, 5.5);
-  _camera.lookAt(0, 1.2, 0);
+  _camera.position.set(0, 1.2, 5.5);
+  _camera.lookAt(0, 1.5, 0);
 
   // Warm key light — top right
   const key = new THREE.DirectionalLight(0xffe8c0, 2.2);

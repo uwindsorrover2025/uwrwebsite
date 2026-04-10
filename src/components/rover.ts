@@ -9,20 +9,16 @@ interface Shot {
   target: [number, number, number];
 }
 
-// Each snap section smoothly orbits the camera to the NEXT shot
+// Camera orbits around the rover across the 5 shots as scroll goes 0→1
 const SHOTS: Shot[] = [
-  { pos: [0, 2.2, 5.5], target: [0, 1.9, 0] },       // Front
-  { pos: [-5.5, 2.6, 1.5], target: [0, 1.9, 0] },     // Left side
-  { pos: [-2.0, 5.5, -4.5], target: [0, 2.1, 0] },    // Elevated back-left
-  { pos: [5.5, 2.6, 1.5], target: [0, 1.9, 0] },      // Right side
-  { pos: [0.5, 7.5, 0.5], target: [0, 1.2, 0] },      // Top-down
+  { pos: [0, 1.2, 5.5], target: [0, 1.5, 0] },       // Front
+  { pos: [-5.5, 1.2, 1.5], target: [0, 1.5, 0] },     // Left side
+  { pos: [-2.0, 5.5, -4.5], target: [0, 1.5, 0] },    // Elevated back-left
+  { pos: [5.5, 1.2, 1.5], target: [0, 1.5, 0] },      // Right side
+  { pos: [0.5, 7.5, 0.5], target: [0, 1.0, 0] },      // Top-down
 ];
 
 let roverGroup: THREE.Group | null = null;
-
-function smoothstep(t: number): number {
-  return t * t * (3 - 2 * t);
-}
 
 function lerp(a: number, b: number, t: number): number {
   return a + (b - a) * t;
@@ -48,7 +44,8 @@ export function loadRover(onReady?: () => void): void {
 
       const group = new THREE.Group();
       group.add(m);
-      group.rotation.y = Math.PI / 4; // fixed heading
+      group.rotation.y = Math.PI / 4;
+      group.position.y = 0.5; // raise rover so it sits centered in frame
       scene.add(group);
       roverGroup = group;
       onReady?.();
@@ -60,11 +57,15 @@ export function loadRover(onReady?: () => void): void {
   );
 }
 
-// sectionIdx: which snap section (0…N-1), sectionProg: 0…1 within that section
-export function updateRover(sectionIdx: number, sectionProg: number): void {
-  const t = smoothstep(sectionProg);
-  const a = SHOTS[sectionIdx];
-  const b = SHOTS[Math.min(sectionIdx + 1, SHOTS.length - 1)];
+// scrollProgress: 0→1 across the full scroll-space
+// Camera smoothly orbits through SHOTS, rover rotation fixed
+export function updateRover(scrollProgress: number): void {
+  const shotFloat = scrollProgress * (SHOTS.length - 1);
+  const idx = Math.min(Math.floor(shotFloat), SHOTS.length - 2);
+  const t = shotFloat - idx;
+
+  const a = SHOTS[idx];
+  const b = SHOTS[idx + 1];
 
   setCameraTransform(
     [lerp(a.pos[0], b.pos[0], t), lerp(a.pos[1], b.pos[1], t), lerp(a.pos[2], b.pos[2], t)],

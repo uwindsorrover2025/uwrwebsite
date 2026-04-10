@@ -29,14 +29,8 @@ export function buildDOM(): void {
   </div>
 </div>
 
-<!-- scroll height for rover snap sections -->
-<div class="scroll-space">
-  <div class="snap-section"></div>
-  <div class="snap-section"></div>
-  <div class="snap-section"></div>
-  <div class="snap-section"></div>
-  <div class="snap-section"></div>
-</div>
+<!-- scroll height for rover section -->
+<div class="scroll-space"></div>
 
 <!-- ─── About ──────────────────────────────────────────────────────── -->
 <section id="about" class="page-section about-section">
