@@ -68,7 +68,12 @@ export const CARDS: CardDef[] = [
     body: "Spectrometer, soil sampler, and multi-spectral cameras enable geological analysis and biosignature detection in simulated Martian environments.",
     stat: "5",
     statLabel: "Instruments . Onboard",
-    tags: ["Spectroscopy", "Soil Sampling", "UV / IR Imaging", "Multi-spectral"],
+    tags: [
+      "Spectroscopy",
+      "Soil Sampling",
+      "UV / IR Imaging",
+      "Multi-spectral",
+    ],
     startProgress: 0.51,
     endProgress: 0.67,
     side: "left",
