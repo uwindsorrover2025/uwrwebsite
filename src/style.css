@@ -27,6 +27,7 @@
 
 html {
   background: var(--bg);
+  scroll-behavior: smooth;
 }
 
 body {
@@ -89,6 +90,8 @@ body {
   inset: 0;
   overflow: hidden;
   background: #06060a;
+  transition: opacity 0.3s ease;
+  will-change: opacity;
 }
 
 /* Vignette overlay – darkens edges/top/bottom for text legibility over the map */
@@ -406,3 +409,298 @@ body {
   height: 480vh;
   pointer-events: none;
 }
+
+/* ─── Shared page section layout ─────────────────────────────────────────── */
+.page-section {
+  position: relative;
+  z-index: 10;
+  background: var(--bg);
+}
+
+.section-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 120px 44px;
+}
+
+.section-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--blue);
+  margin-bottom: 16px;
+}
+
+.section-heading {
+  font-size: clamp(36px, 5vw, 58px);
+  font-weight: 700;
+  letter-spacing: -1.5px;
+  line-height: 1.08;
+  color: var(--text);
+  margin-bottom: 28px;
+}
+
+.section-body-wide {
+  font-size: 16px;
+  line-height: 1.75;
+  color: var(--text-sub);
+  max-width: 680px;
+  margin-bottom: 64px;
+}
+
+/* ─── About — stat row ────────────────────────────────────────────────────── */
+.stat-row {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  margin-bottom: 80px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.page-stat {
+  flex: 1;
+  padding: 32px 36px;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.stat-divider {
+  width: 1px;
+  background: rgba(255, 255, 255, 0.06);
+  flex-shrink: 0;
+}
+
+.page-stat-num {
+  font-size: 42px;
+  font-weight: 700;
+  letter-spacing: -2px;
+  color: #fff;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.page-stat-label {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--text-dim);
+  text-transform: uppercase;
+}
+
+/* ─── About — subteam grid ────────────────────────────────────────────────── */
+.subteams-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.subteam-card {
+  background: var(--bg);
+  padding: 32px 28px;
+  transition: background 0.2s;
+}
+
+.subteam-card:hover {
+  background: rgba(59, 127, 245, 0.04);
+}
+
+.subteam-icon {
+  font-size: 22px;
+  margin-bottom: 12px;
+}
+
+.subteam-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.subteam-body {
+  font-size: 13px;
+  line-height: 1.65;
+  color: var(--text-dim);
+}
+
+/* ─── About — top border glow ─────────────────────────────────────────────── */
+.about-section {
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  box-shadow: 0 -1px 0 0 rgba(59, 127, 245, 0.12);
+}
+
+/* ─── Contact section ─────────────────────────────────────────────────────── */
+.contact-section {
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-bottom: 80px;
+}
+
+.contact-card {
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 20px;
+  padding: 36px 32px;
+  display: flex;
+  flex-direction: column;
+  transition: border-color 0.25s, background 0.25s;
+}
+
+.contact-card:hover {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.contact-card--primary {
+  border-color: rgba(59, 127, 245, 0.3);
+  background: rgba(59, 127, 245, 0.04);
+}
+
+.contact-card--primary:hover {
+  background: rgba(59, 127, 245, 0.07);
+  border-color: rgba(59, 127, 245, 0.46);
+}
+
+.contact-badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  padding: 4px 10px;
+  margin-bottom: 22px;
+  align-self: flex-start;
+}
+
+.contact-badge--blue {
+  color: var(--blue);
+  background: rgba(59, 127, 245, 0.08);
+  border-color: rgba(59, 127, 245, 0.22);
+}
+
+.contact-card-title {
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: -0.4px;
+  margin-bottom: 12px;
+}
+
+.contact-card-body {
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--text-sub);
+  margin-bottom: 24px;
+}
+
+.contact-perks {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 32px;
+  flex: 1;
+}
+
+.contact-perks li {
+  font-size: 13px;
+  color: var(--text-dim);
+  padding-left: 18px;
+  position: relative;
+}
+
+.contact-perks li::before {
+  content: "→";
+  position: absolute;
+  left: 0;
+  color: var(--blue);
+  font-size: 11px;
+}
+
+/* ─── CTA buttons ─────────────────────────────────────────────────────────── */
+.cta-btn {
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  color: var(--text-dim);
+  text-decoration: none;
+  padding: 11px 22px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+  text-align: center;
+}
+
+.cta-btn:hover {
+  color: var(--text);
+  border-color: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.cta-btn--primary {
+  color: #fff;
+  background: var(--blue);
+  border-color: var(--blue);
+}
+
+.cta-btn--primary:hover {
+  background: #5593f7;
+  border-color: #5593f7;
+  color: #fff;
+}
+
+/* ─── Site footer ─────────────────────────────────────────────────────────── */
+.site-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 40px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.footer-brand {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-dim);
+  letter-spacing: 0.04em;
+}
+
+.footer-links {
+  display: flex;
+  gap: 28px;
+}
+
+.footer-links a {
+  font-size: 12px;
+  color: var(--text-dim);
+  text-decoration: none;
+  letter-spacing: 0.04em;
+  transition: color 0.2s;
+}
+
+.footer-links a:hover {
+  color: var(--text);
+}
+
+.footer-copy {
+  font-size: 11px;
+  color: rgba(255,255,255,0.18);
+  letter-spacing: 0.04em;
+}
+
