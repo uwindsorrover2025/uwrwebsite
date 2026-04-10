@@ -16,13 +16,13 @@ export function setupScene(canvas: HTMLCanvasElement): void {
   _renderer.toneMappingExposure = 1.1;
 
   _camera = new THREE.PerspectiveCamera(
-    42,
+    38,
     window.innerWidth / window.innerHeight,
     0.1,
     100,
   );
-  _camera.position.set(0, 1.8, 5.2);
-  _camera.lookAt(0, 0.7, 0);
+  _camera.position.set(0, 1.5, 5.5);
+  _camera.lookAt(0, 1.2, 0);
 
   // Warm key light — top right
   const key = new THREE.DirectionalLight(0xffe8c0, 2.2);
@@ -50,7 +50,7 @@ export function setupScene(canvas: HTMLCanvasElement): void {
 
   const glowTex = new THREE.CanvasTexture(gc);
   const disc = new THREE.Mesh(
-    new THREE.CircleGeometry(2.4, 64),
+    new THREE.CircleGeometry(3.5, 64),
     new THREE.MeshBasicMaterial({
       map: glowTex,
       transparent: true,
@@ -68,6 +68,14 @@ export function startRenderLoop(): void {
     _renderer.render(scene, _camera);
   }
   loop();
+}
+
+export function setCameraTransform(
+  pos: [number, number, number],
+  target: [number, number, number],
+): void {
+  _camera.position.set(...pos);
+  _camera.lookAt(...target);
 }
 
 export function handleResize(): void {

@@ -406,7 +406,12 @@ body {
    viewport.
 ──────────────────────────────────────────────────────────────────────────────── */
 .scroll-space {
-  height: 480vh;
+  height: auto;
+  pointer-events: none;
+}
+
+.snap-section {
+  height: 100vh;
   pointer-events: none;
 }
 

@@ -7,7 +7,7 @@ export function buildDOM(): void {
   <div class="nav-brand">UWR</div>
   <ul class="nav-links">
     <li><a href="#about">About</a></li>
-    <li><a href="#about">Team</a></li>
+    <li><a href="/teams.html">Teams</a></li>
     <li><a href="#contact">Sponsors</a></li>
     <li><a href="#contact">Join Us</a></li>
   </ul>
@@ -29,8 +29,14 @@ export function buildDOM(): void {
   </div>
 </div>
 
-<!-- scroll height for rover spin section -->
-<div class="scroll-space"></div>
+<!-- scroll height for rover snap sections -->
+<div class="scroll-space">
+  <div class="snap-section"></div>
+  <div class="snap-section"></div>
+  <div class="snap-section"></div>
+  <div class="snap-section"></div>
+  <div class="snap-section"></div>
+</div>
 
 <!-- ─── About ──────────────────────────────────────────────────────── -->
 <section id="about" class="page-section about-section">
