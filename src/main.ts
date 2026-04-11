@@ -1,31 +1,32 @@
 import "./style.css";
-import { buildDOM, initHud, updateHud } from "./components/ui";
+import { buildDOM, initHud, updateHud, updateSceneVisibility } from "./components/ui";
 import { injectCards, updateCards } from "./components/cards";
-import { setupScene, startRenderLoop, clampCamTarget, handleResize } from "./components/scene";
-import { addTerrain } from "./components/terrain";
+import { setupScene, startRenderLoop, handleResize } from "./components/scene";
 import { loadRover, updateRover } from "./components/rover";
-import { getWorldPosAt } from "./components/waypoints";
 
 buildDOM();
 injectCards();
 initHud();
 setupScene(document.getElementById("main-canvas") as HTMLCanvasElement);
-addTerrain();
 loadRover(() => updateScroll());
 startRenderLoop();
 
-function getScrollProgress(): number {
-  const max = document.documentElement.scrollHeight - window.innerHeight;
-  return max > 0 ? Math.min(1, window.scrollY / max) : 0;
+function getRoverProgress(): number {
+  const scrollSpaceEl = document.querySelector(".scroll-space") as HTMLElement;
+  const h = scrollSpaceEl.offsetHeight - window.innerHeight;
+  return h > 0 ? Math.min(1, Math.max(0, window.scrollY / h)) : 0;
+}
+
+function getScrollSpaceH(): number {
+  return (document.querySelector(".scroll-space") as HTMLElement).offsetHeight;
 }
 
 function updateScroll(): void {
-  const prog = getScrollProgress();
-  const state = getWorldPosAt(prog);
-  updateRover(state, prog);
-  clampCamTarget(state.x, state.z);
+  const prog = getRoverProgress();
+  updateRover(prog);
   const activeIdx = updateCards(prog);
   updateHud(prog, activeIdx);
+  updateSceneVisibility(window.scrollY, getScrollSpaceH());
 }
 
 window.addEventListener("scroll", updateScroll, { passive: true });

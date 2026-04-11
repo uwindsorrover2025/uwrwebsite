@@ -1,21 +1,28 @@
-// ─── Rover GLB model ──────────────────────────────────────────────────────────
+// ─── Rover GLB model + camera shot definitions ────────────────────────────────
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
-import { scene } from "./scene";
-import type { RoverState } from "./waypoints";
+import { scene, setCameraTransform } from "./scene";
 import roverGlbUrl from "../assets/Meshy_AI_blue_mars_rover_0409051747_texture.glb?url";
 
-// ── Tune if rover faces the wrong direction ────────────────────────────────────
-// 0            = model's +Z is forward (three.js default)
-// Math.PI      = model's -Z is forward (flip 180°)
-// Math.PI / 2  = model's -X is forward
-// -Math.PI / 2 = model's +X is forward
-const HEADING_OFFSET = Math.PI / 2;
+interface Shot {
+  pos: [number, number, number];
+  target: [number, number, number];
+}
 
-// roverGroup is placed in the scene; the loaded mesh sits inside it centered at origin.
-// Rotating roverGroup.rotation.y always pivots around the model's visual center.
+// Camera orbits around the rover across the 5 shots as scroll goes 0→1
+const SHOTS: Shot[] = [
+  { pos: [0, 1.2, 5.5], target: [0, 1.5, 0] },       // Front
+  { pos: [-5.5, 1.2, 1.5], target: [0, 1.5, 0] },     // Left side
+  { pos: [-2.0, 5.5, -4.5], target: [0, 1.5, 0] },    // Elevated back-left
+  { pos: [5.5, 1.2, 1.5], target: [0, 1.5, 0] },      // Right side
+  { pos: [0.5, 7.5, 0.5], target: [0, 1.0, 0] },      // Top-down
+];
+
 let roverGroup: THREE.Group | null = null;
-let wheels: THREE.Object3D[] = [];
+
+function lerp(a: number, b: number, t: number): number {
+  return a + (b - a) * t;
+}
 
 export function loadRover(onReady?: () => void): void {
   new GLTFLoader().load(
@@ -23,32 +30,22 @@ export function loadRover(onReady?: () => void): void {
     (gltf) => {
       const m = gltf.scene;
 
-      // Center model at its own origin so rotation pivots correctly
       const box1 = new THREE.Box3().setFromObject(m);
       const center = new THREE.Vector3();
       box1.getCenter(center);
       m.position.sub(center);
 
-      // Scale to ~1.4 world units tall
       const size = new THREE.Vector3();
       box1.getSize(size);
-      m.scale.setScalar(1.4 / Math.max(size.x, size.y, size.z));
+      m.scale.setScalar(3.8 / Math.max(size.x, size.y, size.z));
 
-      // Sit on y = 0 (ground plane)
       const box2 = new THREE.Box3().setFromObject(m);
       m.position.y -= box2.min.y;
 
-      // Collect wheel objects for spinning
-      m.traverse((child) => {
-        const n = child.name.toLowerCase();
-        if (n.includes("wheel") || n.includes("tire") || n.includes("tyre")) {
-          wheels.push(child);
-        }
-      });
-
-      // Wrap in a group so heading rotation always pivots around model center
       const group = new THREE.Group();
       group.add(m);
+      group.rotation.y = Math.PI / 4;
+      group.position.y = 0.5; // raise rover so it sits centered in frame
       scene.add(group);
       roverGroup = group;
       onReady?.();
@@ -60,12 +57,18 @@ export function loadRover(onReady?: () => void): void {
   );
 }
 
-export function updateRover(state: RoverState, scrollProgress: number): void {
-  if (!roverGroup) return;
-  roverGroup.position.x = state.x;
-  roverGroup.position.z = state.z;
-  roverGroup.rotation.y = state.headingRad + HEADING_OFFSET;
+// scrollProgress: 0→1 across the full scroll-space
+// Camera smoothly orbits through SHOTS, rover rotation fixed
+export function updateRover(scrollProgress: number): void {
+  const shotFloat = scrollProgress * (SHOTS.length - 1);
+  const idx = Math.min(Math.floor(shotFloat), SHOTS.length - 2);
+  const t = shotFloat - idx;
 
-  const spinRad = scrollProgress * Math.PI * 20;
-  for (const w of wheels) w.rotation.x = spinRad;
+  const a = SHOTS[idx];
+  const b = SHOTS[idx + 1];
+
+  setCameraTransform(
+    [lerp(a.pos[0], b.pos[0], t), lerp(a.pos[1], b.pos[1], t), lerp(a.pos[2], b.pos[2], t)],
+    [lerp(a.target[0], b.target[0], t), lerp(a.target[1], b.target[1], t), lerp(a.target[2], b.target[2], t)],
+  );
 }
