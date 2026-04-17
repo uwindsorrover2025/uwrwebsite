@@ -6,27 +6,16 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { scene, setCameraTransform } from "./scene";
 import roverUrl from "../assets/GazeboV2.glb?url";
 
-// ── Per-role slide animation ──────────────────────────────────────────────────
+// ── Slide animation config ────────────────────────────────────────────────────
 // Directions are in group-local space. The group is rotated 45° around Y, so
 // [-d, 0, -d] → screen-left and [d, 0, d] → screen-right.
 
-const S = 3.0; // slide magnitude (units in normalised model space)
+const S = 3.5; // slide magnitude
 
-const ROLE_ANIMS: Record<
-  string,
-  { dir: [number, number, number]; start: number; end: number }
-> = {
-  wheel_fl: { dir: [-S, 0, -S], start: 0.18, end: 0.36 },
-  wheel_fr: { dir: [S, 0, S], start: 0.20, end: 0.38 },
-  wheel_ml: { dir: [-S, 0, -S], start: 0.27, end: 0.45 },
-  wheel_mr: { dir: [S, 0, S], start: 0.29, end: 0.47 },
-  wheel_rl: { dir: [-S, 0, -S], start: 0.36, end: 0.54 },
-  wheel_rr: { dir: [S, 0, S], start: 0.38, end: 0.56 },
-  bogie_left: { dir: [-S, 0, -S], start: 0.52, end: 0.68 },
-  bogie_right: { dir: [S, 0, S], start: 0.54, end: 0.70 },
-  rocker_left: { dir: [-S, 0, -S], start: 0.66, end: 0.82 },
-  rocker_right: { dir: [S, 0, S], start: 0.68, end: 0.84 },
-};
+// 3 disassembly phases, ordered outside-in from chassis
+const PHASE_WHEELS = { start: 0.16, end: 0.40 };
+const PHASE_DRIVE = { start: 0.38, end: 0.62 };
+const PHASE_BODY = { start: 0.60, end: 0.84 };
 
 // ── Camera ────────────────────────────────────────────────────────────────────
 // Zooms in during the first 15% of scroll, then stays fixed.
@@ -36,11 +25,35 @@ const CAM_CLOSE: [number, number, number] = [0, 1.5, 5];
 const CAM_TARGET: [number, number, number] = [0, 1.5, 0];
 const CAM_ZOOM_END = 0.15;
 
+// ── Materials (no UVs in the STL-sourced mesh, so colour + PBR only) ──────────
+
+const MAT_CHASSIS = new THREE.MeshStandardMaterial({
+  color: 0x3b7ff5, // brand blue
+  metalness: 0.55,
+  roughness: 0.35,
+});
+const MAT_WHEEL = new THREE.MeshStandardMaterial({
+  color: 0x0a0a0a, // deep black
+  metalness: 0.1,
+  roughness: 0.9,
+});
+const MAT_STRUCTURE = new THREE.MeshStandardMaterial({
+  color: 0xc8ccd2, // brushed silver (drivetrain)
+  metalness: 0.85,
+  roughness: 0.28,
+});
+const MAT_DEFAULT = new THREE.MeshStandardMaterial({
+  color: 0xd9dde3, // polished silver (screws / body hardware)
+  metalness: 0.9,
+  roughness: 0.22,
+});
+
 // ── Tracked parts state ───────────────────────────────────────────────────────
 
 interface Tracked {
   obj: THREE.Object3D;
   origin: THREE.Vector3;
+  centroid: THREE.Vector3;
   dir: [number, number, number];
   start: number;
   end: number;
@@ -126,7 +139,6 @@ interface CompInfo {
 
 function buildComponentMeshes(
   normPos: Float32Array,
-  norm: THREE.BufferAttribute | null,
   idx: THREE.BufferAttribute | null,
   components: number[][],
   mat: THREE.Material,
@@ -143,7 +155,6 @@ function buildComponentMeshes(
     uniq.forEach((old, i) => remap.set(old, i));
 
     const p = new Float32Array(uniq.length * 3);
-    const n = norm ? new Float32Array(uniq.length * 3) : null;
     let cx = 0,
       cy = 0,
       cz = 0;
@@ -159,11 +170,6 @@ function buildComponentMeshes(
       cx += x;
       cy += y;
       cz += z;
-      if (norm && n) {
-        n[i * 3] = norm.getX(oi);
-        n[i * 3 + 1] = norm.getY(oi);
-        n[i * 3 + 2] = norm.getZ(oi);
-      }
     }
     cx /= uniq.length;
     cy /= uniq.length;
@@ -186,8 +192,8 @@ function buildComponentMeshes(
 
     const geo = new THREE.BufferGeometry();
     geo.setAttribute("position", new THREE.BufferAttribute(p, 3));
-    if (n) geo.setAttribute("normal", new THREE.BufferAttribute(n, 3));
     geo.setIndex(new THREE.BufferAttribute(idxArr, 1));
+    geo.computeVertexNormals();
     geo.computeBoundingSphere();
 
     const mesh = new THREE.Mesh(geo, mat);
@@ -198,97 +204,80 @@ function buildComponentMeshes(
   });
 }
 
-// ── Auto-classify components by position ──────────────────────────────────────
+// ── Distance-based 3-phase classification ─────────────────────────────────────
+// Groups every component by distance from chassis center:
+//   Phase 1 (furthest)  → wheels + their hardware
+//   Phase 2 (middle)    → drivetrain / suspension
+//   Phase 3 (closest)   → chassis-mounted parts
+// Each part slides screen-left or screen-right based on which side it's on.
 
 function classifyParts(infos: CompInfo[]): void {
   tracked = [];
-  if (infos.length < 2) {
-    console.warn("Not enough components to classify");
-    return;
-  }
+  if (infos.length < 2) return;
 
-  // Only use the largest 11 structural components (ignore screws/brackets)
   const sorted = [...infos].sort((a, b) => b.triCount - a.triCount);
-  const top = sorted.slice(0, Math.min(11, sorted.length));
 
-  // Largest = chassis — stays in place, not animated
-  console.log(
-    `  chassis (stays): centroid (${top[0].centroid.x.toFixed(2)}, ${top[0].centroid.y.toFixed(2)}, ${top[0].centroid.z.toFixed(2)}), ${top[0].triCount} tris`,
-  );
-
-  const rest = top.slice(1);
-  const centerX =
-    rest.reduce((s, c) => s + c.centroid.x, 0) / rest.length;
-
-  const left = rest.filter((c) => c.centroid.x < centerX);
-  const right = rest.filter((c) => c.centroid.x >= centerX);
-
-  console.log(
-    `  Split (top 10 only): ${left.length} left, ${right.length} right (at X=${centerX.toFixed(2)})`,
-  );
-
-  classifySide(left, "left", "l");
-  classifySide(right, "right", "r");
-}
-
-function classifySide(
-  side: CompInfo[],
-  sideLabel: string,
-  sideChar: string,
-): void {
-  // Sort by Y descending — highest centroid = rocker, then bogie, then wheels
-  side.sort((a, b) => b.centroid.y - a.centroid.y);
-
-  if (side.length >= 5) {
-    assignRole(side[0], `rocker_${sideLabel}`);
-    assignRole(side[1], `bogie_${sideLabel}`);
-
-    const wheels = side.slice(2, 5);
-    wheels.sort((a, b) => b.centroid.z - a.centroid.z);
-    assignRole(wheels[0], `wheel_f${sideChar}`);
-    assignRole(wheels[1], `wheel_m${sideChar}`);
-    assignRole(wheels[2], `wheel_r${sideChar}`);
-  } else if (side.length >= 3) {
-    // Fewer parts — treat them all as wheels
-    side.sort((a, b) => b.centroid.z - a.centroid.z);
-    const roles = [`wheel_f${sideChar}`, `wheel_m${sideChar}`, `wheel_r${sideChar}`];
-    side.forEach((c, i) => {
-      if (i < roles.length) assignRole(c, roles[i]);
-    });
-  } else {
-    side.forEach((c, i) => {
-      const fallbackRole = `${sideLabel}_part_${i}`;
-      const anim = ROLE_ANIMS[`wheel_m${sideChar}`];
-      if (anim) {
-        tracked.push({
-          obj: c.mesh,
-          origin: c.mesh.position.clone(),
-          dir: anim.dir,
-          start: anim.start + i * 0.04,
-          end: anim.end + i * 0.04,
-        });
-        console.log(`  ${fallbackRole} (fallback): centroid (${c.centroid.x.toFixed(2)}, ${c.centroid.y.toFixed(2)}, ${c.centroid.z.toFixed(2)})`);
-      }
-    });
-  }
-}
-
-function assignRole(info: CompInfo, role: string): void {
-  const anim = ROLE_ANIMS[role];
-  if (!anim) {
-    console.warn(`Unknown role: ${role}`);
-    return;
-  }
+  // Largest component = chassis — stays in place
+  const chassis = sorted[0];
+  chassis.mesh.material = MAT_CHASSIS;
   tracked.push({
-    obj: info.mesh,
-    origin: info.mesh.position.clone(),
-    dir: anim.dir,
-    start: anim.start,
-    end: anim.end,
+    obj: chassis.mesh,
+    origin: chassis.mesh.position.clone(),
+    centroid: chassis.centroid.clone(),
+    dir: [0, 0, 0],
+    start: 0,
+    end: 1,
   });
+  const chC = chassis.centroid;
   console.log(
-    `  ${role}: centroid (${info.centroid.x.toFixed(2)}, ${info.centroid.y.toFixed(2)}, ${info.centroid.z.toFixed(2)}), ${info.triCount} tris`,
+    `  chassis (stays): (${chC.x.toFixed(2)}, ${chC.y.toFixed(2)}, ${chC.z.toFixed(2)}), ${chassis.triCount} tris`,
   );
+
+  // Sort remaining by distance from chassis, furthest first
+  const rest = sorted.slice(1).map((c) => ({
+    info: c,
+    dist: c.centroid.distanceTo(chC),
+  }));
+  rest.sort((a, b) => b.dist - a.dist);
+
+  const n = rest.length;
+  const cut1 = Math.ceil(n / 3);
+  const cut2 = Math.ceil((2 * n) / 3);
+
+  const grpWheels = rest.slice(0, cut1);
+  const grpDrive = rest.slice(cut1, cut2);
+  const grpBody = rest.slice(cut2);
+
+  function addPhase(
+    group: typeof rest,
+    phase: { start: number; end: number },
+    mat: THREE.Material,
+    label: string,
+  ): void {
+    const stagger = (phase.end - phase.start) * 0.25;
+    for (let i = 0; i < group.length; i++) {
+      const { info } = group[i];
+      const goLeft = info.centroid.x < chC.x;
+      const dir: [number, number, number] = goLeft
+        ? [-S, 0, -S]
+        : [S, 0, S];
+      info.mesh.material = mat;
+      const offset = (i / Math.max(1, group.length - 1)) * stagger;
+      tracked.push({
+        obj: info.mesh,
+        origin: info.mesh.position.clone(),
+        centroid: info.centroid.clone(),
+        dir,
+        start: phase.start + offset,
+        end: phase.end + offset,
+      });
+    }
+    console.log(`  ${label}: ${group.length} parts`);
+  }
+
+  addPhase(grpWheels, PHASE_WHEELS, MAT_WHEEL, "Phase 1 — wheels");
+  addPhase(grpDrive, PHASE_DRIVE, MAT_STRUCTURE, "Phase 2 — drivetrain");
+  addPhase(grpBody, PHASE_BODY, MAT_DEFAULT, "Phase 3 — body parts");
 }
 
 // ── Public API (unchanged signature) ──────────────────────────────────────────
@@ -308,7 +297,6 @@ export function loadRover(onReady?: () => void): void {
 
       const geo = srcMesh.geometry;
       const pos = geo.getAttribute("position") as THREE.BufferAttribute;
-      const norm = geo.getAttribute("normal") as THREE.BufferAttribute | null;
       const idx = geo.getIndex();
 
       // Bounding box
@@ -356,13 +344,6 @@ export function loadRover(onReady?: () => void): void {
         `Components: ${components.length} (${(performance.now() - t0).toFixed(0)} ms)  sizes: [${components.map((c) => c.length).join(", ")}]`,
       );
 
-      // Material
-      const mat = new THREE.MeshStandardMaterial({
-        color: 0x8899aa,
-        metalness: 0.55,
-        roughness: 0.35,
-      });
-
       // Container group (rotation + vertical lift)
       const group = new THREE.Group();
       group.rotation.y = Math.PI / 4;
@@ -372,10 +353,9 @@ export function loadRover(onReady?: () => void): void {
       // Build individual meshes and classify
       const infos = buildComponentMeshes(
         normPos,
-        norm,
         idx,
         components,
-        mat,
+        MAT_DEFAULT,
         group,
       );
       classifyParts(infos);
