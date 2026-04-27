@@ -178,6 +178,54 @@ body {
   transform: translateX(32px) scale(0.96);
 }
 
+.info-card--team {
+  pointer-events: auto;
+  padding-top: 22px;
+}
+
+.info-card--team .card-title {
+  margin-bottom: 4px;
+}
+
+.info-card--team .card-subtitle {
+  margin-bottom: 12px;
+}
+
+.card-team-photo-wrap {
+  width: 100%;
+  height: 168px;
+  border-radius: 14px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.card-team-photo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+}
+
+a.card-team-in {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--blue);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(59, 127, 245, 0.35);
+  padding-bottom: 2px;
+  margin-top: 0;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+a.card-team-in:hover {
+  color: #6aa4ff;
+  border-bottom-color: rgba(106, 164, 255, 0.5);
+}
+
 /* ── Metrics row ──────────────────────────────────────────────────────────── */
 .card-metrics {
   display: flex;
@@ -552,7 +600,9 @@ body {
   padding: 36px 32px;
   display: flex;
   flex-direction: column;
-  transition: border-color 0.25s, background 0.25s;
+  transition:
+    border-color 0.25s,
+    background 0.25s;
 }
 
 .contact-card:hover {
@@ -641,7 +691,10 @@ body {
   padding: 11px 22px;
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 10px;
-  transition: color 0.2s, border-color 0.2s, background 0.2s;
+  transition:
+    color 0.2s,
+    border-color 0.2s,
+    background 0.2s;
   text-align: center;
 }
 
@@ -700,7 +753,6 @@ body {
 
 .footer-copy {
   font-size: 11px;
-  color: rgba(255,255,255,0.18);
+  color: rgba(255, 255, 255, 0.18);
   letter-spacing: 0.04em;
 }
-

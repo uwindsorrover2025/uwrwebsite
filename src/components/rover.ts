@@ -13,9 +13,9 @@ import roverUrl from "../assets/GazeboV2.glb?url";
 const S = 3.5; // slide magnitude
 
 // 3 disassembly phases, ordered outside-in from chassis
-const PHASE_WHEELS = { start: 0.16, end: 0.40 };
+const PHASE_WHEELS = { start: 0.16, end: 0.4 };
 const PHASE_DRIVE = { start: 0.38, end: 0.62 };
-const PHASE_BODY = { start: 0.60, end: 0.84 };
+const PHASE_BODY = { start: 0.6, end: 0.84 };
 
 // ── Camera ────────────────────────────────────────────────────────────────────
 // Zooms in during the first 15% of scroll, then stays fixed.
@@ -30,7 +30,7 @@ const CAM_ZOOM_END = 0.15;
 
 const ROT_START = Math.PI / 4; // 45°
 const ROT_END = Math.PI / 2; // 90°
-const ROT_BEGIN = 0.80; // scroll prog when rotation animation starts
+const ROT_BEGIN = 0.8; // scroll prog when rotation animation starts
 const ROT_FINISH = 1.0;
 
 // ── Materials (no UVs in the STL-sourced mesh, so colour + PBR only) ──────────
@@ -209,7 +209,11 @@ function buildComponentMeshes(
     mesh.position.set(cx, cy, cz);
     parent.add(mesh);
 
-    return { mesh, centroid: new THREE.Vector3(cx, cy, cz), triCount: tris.length };
+    return {
+      mesh,
+      centroid: new THREE.Vector3(cx, cy, cz),
+      triCount: tris.length,
+    };
   });
 }
 
@@ -285,7 +289,12 @@ function classifyParts(infos: CompInfo[]): void {
   }
 
   addPhase(grpWheels, PHASE_WHEELS, MAT_WHEEL, "Phase 1 — wheels");
-  addPhase(grpDrive, PHASE_DRIVE, MAT_STRUCTURE, "Phase 2 — drivetrain + screws");
+  addPhase(
+    grpDrive,
+    PHASE_DRIVE,
+    MAT_STRUCTURE,
+    "Phase 2 — drivetrain + screws",
+  );
   addPhase(grpBody, PHASE_BODY, MAT_DEFAULT, "Phase 3 — body hardware");
 }
 
@@ -304,7 +313,8 @@ export function loadRover(onReady?: () => void): void {
         return;
       }
 
-      const geo = srcMesh.geometry;
+      const primaryMesh: THREE.Mesh = srcMesh;
+      const geo = primaryMesh.geometry;
       const pos = geo.getAttribute("position") as THREE.BufferAttribute;
       const idx = geo.getIndex();
 
