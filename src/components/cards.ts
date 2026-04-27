@@ -1,24 +1,46 @@
 // ─── Info cards data, injection, and per-frame opacity updates ────────────────
 
-export interface CardDef {
-  id: number;
-  title: string;
-  subtitle: string;
-  body: string;
-  stat: string;
-  statLabel: string;
-  stat2?: string;
-  stat2Label?: string;
-  tags: string[];
-  extra?: string; // raw HTML for unique visual element (chart, etc.)
-  startProgress: number;
-  endProgress: number;
-  side: "left" | "right";
-  top: number; // viewport %
-}
+import jadnizamUrl from "../assets/jadnizam.png?url";
+import ranaUrl from "../assets/rana.png?url";
+import yajurUrl from "../assets/yajur.png?url";
+import alihasanUrl from "../assets/alihasan.png?url";
 
-export const CARDS: CardDef[] = [
+export type CardDef =
+  | {
+      kind: "default";
+      id: number;
+      title: string;
+      subtitle: string;
+      body: string;
+      stat: string;
+      statLabel: string;
+      stat2?: string;
+      stat2Label?: string;
+      tags: string[];
+      extra?: string;
+      startProgress: number;
+      endProgress: number;
+      side: "left" | "right";
+      top: number;
+    }
+  | {
+      kind: "team";
+      id: number;
+      title: string;
+      subtitle: string;
+      photoUrl: string;
+      linkedInUrl: string;
+      startProgress: number;
+      endProgress: number;
+      side: "left" | "right";
+      top: number;
+    };
+
+type HomeCard = Extract<CardDef, { kind: "default" }>;
+
+export const CARDS: HomeCard[] = [
   {
+    kind: "default",
     id: 1,
     title: "UWR Rover",
     subtitle: "University of Windsor Robotics",
@@ -32,6 +54,7 @@ export const CARDS: CardDef[] = [
     top: 24,
   },
   {
+    kind: "default",
     id: 2,
     title: "6-Wheel Drive",
     subtitle: "Mobility System",
@@ -47,6 +70,7 @@ export const CARDS: CardDef[] = [
     top: 24,
   },
   {
+    kind: "default",
     id: 3,
     title: "Autonomous Navigation",
     subtitle: "AI-Powered Systems",
@@ -62,6 +86,7 @@ export const CARDS: CardDef[] = [
     top: 32,
   },
   {
+    kind: "default",
     id: 4,
     title: "Science Payload",
     subtitle: "Research Instruments",
@@ -80,6 +105,7 @@ export const CARDS: CardDef[] = [
     top: 38,
   },
   {
+    kind: "default",
     id: 5,
     title: "Competition Ready",
     subtitle: "IRC & URC",
@@ -102,6 +128,7 @@ export const CARDS: CardDef[] = [
     top: 42,
   },
   {
+    kind: "default",
     id: 6,
     title: "Join the Team",
     subtitle: "Open Recruitment",
@@ -118,7 +145,60 @@ export const CARDS: CardDef[] = [
   },
 ];
 
+export const TEAM_CARDS: Extract<CardDef, { kind: "team" }>[] = [
+  {
+    kind: "team",
+    id: 1,
+    title: "Jad Nizam",
+    subtitle: "Team Captain",
+    photoUrl: jadnizamUrl,
+    linkedInUrl: "https://www.linkedin.com/in/jad-nizam-967354299/",
+    startProgress: 0.02,
+    endProgress: 0.28,
+    side: "right",
+    top: 26,
+  },
+  {
+    kind: "team",
+    id: 2,
+    title: "Rana Usman Ali Nasir",
+    subtitle: "Engineering Lead",
+    photoUrl: ranaUrl,
+    linkedInUrl: "linkedin.com/in/rana-usman-ali-nasir/",
+    startProgress: 0.24,
+    endProgress: 0.52,
+    side: "left",
+    top: 28,
+  },
+  {
+    kind: "team",
+    id: 3,
+    title: "Yajur Chaturvedi ",
+    subtitle: "Software Lead",
+    photoUrl: yajurUrl,
+    linkedInUrl: "https://www.linkedin.com/in/yajur-chaturvedi-0a3598263/",
+    startProgress: 0.48,
+    endProgress: 0.76,
+    side: "right",
+    top: 30,
+  },
+  {
+    kind: "team",
+    id: 4,
+    title: "Ali Hasan",
+    subtitle: "Electrical & Systems",
+    photoUrl: alihasanUrl,
+    linkedInUrl: "https://www.linkedin.com/in/alialz/",
+    startProgress: 0.72,
+    endProgress: 1.0,
+    side: "left",
+    top: 32,
+  },
+];
+
 const FADE = 0.04;
+
+let activeCards: CardDef[] = CARDS;
 
 function cardOpacity(card: CardDef, prog: number): number {
   if (prog < card.startProgress || prog > card.endProgress) return 0;
@@ -129,6 +209,18 @@ function cardOpacity(card: CardDef, prog: number): number {
 }
 
 function buildCardHTML(card: CardDef): string {
+  if (card.kind === "team") {
+    return `
+    <div class="card-team-photo-wrap">
+      <img class="card-team-photo" src="${card.photoUrl}" alt="${card.title}" />
+    </div>
+    <div class="card-rule"></div>
+    <h3 class="card-title">${card.title}</h3>
+    <div class="card-subtitle">${card.subtitle}</div>
+    <a class="card-team-in" href="${card.linkedInUrl}" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+  `;
+  }
+
   const metrics =
     card.stat2 !== undefined
       ? `<div class="card-metrics">
@@ -164,11 +256,13 @@ function buildCardHTML(card: CardDef): string {
 
 let cardEls: HTMLElement[] = [];
 
-export function injectCards(): void {
+export function injectCards(list: CardDef[] = CARDS): void {
   const container = document.getElementById("cards-container")!;
-  cardEls = CARDS.map((card) => {
+  activeCards = list;
+  cardEls = list.map((card) => {
     const el = document.createElement("div");
-    el.className = `info-card info-card-${card.side}`;
+    const team = card.kind === "team" ? " info-card--team" : "";
+    el.className = `info-card${team} info-card-${card.side}`;
     el.id = `card-${card.id}`;
     el.style.top = `${card.top}%`;
     el.innerHTML = buildCardHTML(card);
@@ -177,11 +271,10 @@ export function injectCards(): void {
   });
 }
 
-// Returns the index of the most-visible card (-1 = none)
 export function updateCards(prog: number): number {
   let activeIdx = -1,
     bestOpacity = 0;
-  CARDS.forEach((card, i) => {
+  activeCards.forEach((card, i) => {
     const op = cardOpacity(card, prog);
     if (op > bestOpacity) {
       bestOpacity = op;

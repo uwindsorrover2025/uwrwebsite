@@ -2,7 +2,7 @@
 import "./style.css";
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
-import { injectCards, updateCards } from "./components/cards";
+import { injectCards, updateCards, TEAM_CARDS } from "./components/cards";
 import { getWorldPosAt } from "./components/waypoints";
 import roverGlbUrl from "./assets/Meshy_AI_blue_mars_rover_0409051747_texture.glb?url";
 import mapUrl from "./assets/map.png?url";
@@ -34,12 +34,11 @@ document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
   </div>
 </div>
 
-<div style="height:480vh;pointer-events:none"></div>
+<div style="height:320vh;pointer-events:none"></div>
 `;
+injectCards(TEAM_CARDS);
 
-injectCards();
-
-const N = 6;
+const N = TEAM_CARDS.length;
 const progressFill = document.getElementById("progress-fill")!;
 const sectionCounter = document.getElementById("section-counter")!;
 const scrollHint = document.getElementById("scroll-hint")!;
