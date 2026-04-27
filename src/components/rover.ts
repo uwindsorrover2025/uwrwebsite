@@ -25,6 +25,14 @@ const CAM_CLOSE: [number, number, number] = [0, 1.5, 5];
 const CAM_TARGET: [number, number, number] = [0, 1.5, 0];
 const CAM_ZOOM_END = 0.15;
 
+// ── Rover rotation ────────────────────────────────────────────────────────────
+// Holds at 45° for phases 1–5, then eases to 90° during the final phase.
+
+const ROT_START = Math.PI / 4; // 45°
+const ROT_END = Math.PI / 2; // 90°
+const ROT_BEGIN = 0.80; // scroll prog when rotation animation starts
+const ROT_FINISH = 1.0;
+
 // ── Materials (no UVs in the STL-sourced mesh, so colour + PBR only) ──────────
 
 const MAT_CHASSIS = new THREE.MeshStandardMaterial({
@@ -60,6 +68,7 @@ interface Tracked {
 }
 
 let tracked: Tracked[] = [];
+let roverGroup: THREE.Group | null = null;
 
 function lerp(a: number, b: number, t: number): number {
   return a + (b - a) * t;
@@ -233,23 +242,25 @@ function classifyParts(infos: CompInfo[]): void {
     `  chassis (stays): (${chC.x.toFixed(2)}, ${chC.y.toFixed(2)}, ${chC.z.toFixed(2)}), ${chassis.triCount} tris`,
   );
 
-  // Sort remaining by distance from chassis, furthest first
-  const rest = sorted.slice(1).map((c) => ({
-    info: c,
-    dist: c.centroid.distanceTo(chC),
+  // Top 6 non-chassis components by size = the 6 wheels (Phase 1)
+  const WHEEL_COUNT = 6;
+  const grpWheels = sorted.slice(1, 1 + WHEEL_COUNT).map((info) => ({ info }));
+
+  // Remaining components: split by distance from chassis
+  // Farther → drivetrain + screws (Phase 2)
+  // Closer  → chassis-mounted body parts (Phase 3)
+  const remaining = sorted.slice(1 + WHEEL_COUNT).map((info) => ({
+    info,
+    dist: info.centroid.distanceTo(chC),
   }));
-  rest.sort((a, b) => b.dist - a.dist);
+  remaining.sort((a, b) => b.dist - a.dist);
 
-  const n = rest.length;
-  const cut1 = Math.ceil(n / 3);
-  const cut2 = Math.ceil((2 * n) / 3);
-
-  const grpWheels = rest.slice(0, cut1);
-  const grpDrive = rest.slice(cut1, cut2);
-  const grpBody = rest.slice(cut2);
+  const half = Math.ceil(remaining.length / 2);
+  const grpDrive = remaining.slice(0, half).map(({ info }) => ({ info }));
+  const grpBody = remaining.slice(half).map(({ info }) => ({ info }));
 
   function addPhase(
-    group: typeof rest,
+    group: { info: CompInfo }[],
     phase: { start: number; end: number },
     mat: THREE.Material,
     label: string,
@@ -258,9 +269,7 @@ function classifyParts(infos: CompInfo[]): void {
     for (let i = 0; i < group.length; i++) {
       const { info } = group[i];
       const goLeft = info.centroid.x < chC.x;
-      const dir: [number, number, number] = goLeft
-        ? [-S, 0, -S]
-        : [S, 0, S];
+      const dir: [number, number, number] = goLeft ? [-S, 0, -S] : [S, 0, S];
       info.mesh.material = mat;
       const offset = (i / Math.max(1, group.length - 1)) * stagger;
       tracked.push({
@@ -276,8 +285,8 @@ function classifyParts(infos: CompInfo[]): void {
   }
 
   addPhase(grpWheels, PHASE_WHEELS, MAT_WHEEL, "Phase 1 — wheels");
-  addPhase(grpDrive, PHASE_DRIVE, MAT_STRUCTURE, "Phase 2 — drivetrain");
-  addPhase(grpBody, PHASE_BODY, MAT_DEFAULT, "Phase 3 — body parts");
+  addPhase(grpDrive, PHASE_DRIVE, MAT_STRUCTURE, "Phase 2 — drivetrain + screws");
+  addPhase(grpBody, PHASE_BODY, MAT_DEFAULT, "Phase 3 — body hardware");
 }
 
 // ── Public API (unchanged signature) ──────────────────────────────────────────
@@ -346,9 +355,10 @@ export function loadRover(onReady?: () => void): void {
 
       // Container group (rotation + vertical lift)
       const group = new THREE.Group();
-      group.rotation.y = Math.PI / 4;
+      group.rotation.y = ROT_START;
       group.position.y = 0.5;
       scene.add(group);
+      roverGroup = group;
 
       // Build individual meshes and classify
       const infos = buildComponentMeshes(
@@ -379,6 +389,15 @@ export function updateRover(prog: number): void {
       origin.y + dir[1] * t,
       origin.z + dir[2] * t,
     );
+  }
+
+  // Rover rotation: holds at 45° until ROT_BEGIN, then eases to 90°
+  if (roverGroup) {
+    const rt = Math.max(
+      0,
+      Math.min(1, (prog - ROT_BEGIN) / (ROT_FINISH - ROT_BEGIN)),
+    );
+    roverGroup.rotation.y = lerp(ROT_START, ROT_END, easeOutCubic(rt));
   }
 
   // Camera: zoom in during 0→CAM_ZOOM_END, then hold position
