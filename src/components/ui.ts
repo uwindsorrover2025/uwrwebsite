@@ -141,7 +141,7 @@ export function buildDOM(): void {
           <li>International competition travel</li>
           <li>Industry connections + co-op support</li>
         </ul>
-        <a href="mailto:recruitment@uwrover.ca" class="cta-btn cta-btn--primary">Apply Now →</a>
+        <a href="https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=szP5EmE9GUuaTWiQId6MyQM_C2GlxKxGh_0vIdWrtoRUNElZSFdRUDZWQkFWTEY1RDlGMjhHQlkxOS4u" target="_blank" rel="noopener noreferrer" class="cta-btn cta-btn--primary">Apply Now →</a>
       </div>
 
       <div class="contact-card">
