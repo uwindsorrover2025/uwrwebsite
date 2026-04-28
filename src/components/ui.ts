@@ -4,18 +4,34 @@ import { CARDS } from "./cards";
 export function buildDOM(): void {
   document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
 <nav class="nav">
-  <div class="nav-brand">UWR</div>
+  <a href="/" class="nav-brand">
+    <img src="/logo.png" alt="" width="44" height="44" class="nav-logo" />
+    <span class="nav-brand-text">UWR</span>
+  </a>
   <ul class="nav-links">
+    <li><a href="/">Home</a></li>
     <li><a href="#about">About</a></li>
-    <li><a href="/teams.html">Teams</a></li>
-    <li><a href="#contact">Sponsors</a></li>
-    <li><a href="#contact">Join Us</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="/teams.html">Team</a></li>
   </ul>
 </nav>
 
 <!-- ─── Fixed Three.js scene (rover) ──────────────────────────────── -->
 <div class="scene" id="rover-scene">
   <canvas id="main-canvas"></canvas>
+  <div class="hero-splash" id="hero-splash">
+    <p class="hero-eyebrow">University of Windsor Rover</p>
+    <h1 class="hero-headline">
+      <span class="hero-headline-lead">Exploring Mars &amp; Beyond:</span>
+      <span class="hero-headline-body">
+        Dynamic space enthusiasts shaping the future with robotics, engineering, &amp; innovation.
+      </span>
+    </h1>
+    <div class="hero-actions">
+      <a href="#about" class="hero-btn hero-btn--primary">About the team</a>
+      <a href="#contact" class="hero-btn hero-btn--ghost">Get in touch</a>
+    </div>
+  </div>
   <div id="cards-container"></div>
   <div class="hud">
     <div class="scroll-hint" id="scroll-hint">
@@ -35,19 +51,39 @@ export function buildDOM(): void {
 <!-- ─── About ──────────────────────────────────────────────────────── -->
 <section id="about" class="page-section about-section">
   <div class="section-inner">
-    <p class="section-label">Who We Are</p>
-    <h2 class="section-heading">University of Windsor<br>Rover Team</h2>
-    <p class="section-body-wide">
-      UWR is a multidisciplinary student engineering team designing and building Mars analog rovers
-      for international competition. We compete at the University Rover Challenge in Utah, the
-      International Rover Challenge in India, and the Canadian Rover Challenge — pushing what
-      student engineers can build, year after year.
+    <p class="section-label section-label--center">Where we compete</p>
+    <h2 class="section-heading section-heading--center">Built for CIRC<br />and what's next</h2>
+    <p class="section-lede">
+      We design and field Mars-analog rovers as the University of Windsor Rover team — hands-on hardware,
+      embedded systems, autonomy, and science payloads — measured against real courses and real clocks at the
+      <a href="https://circ.cstag.ca/" class="inline-link" target="_blank" rel="noopener noreferrer">Canadian International Rover Challenge</a>
+      (CIRC), organized by CSTAG. When the gates open, every subsystem matters.
     </p>
+
+    <div class="circ-panel">
+      <div class="circ-panel-copy">
+        <h3 class="circ-panel-title">Canadian International Rover Challenge</h3>
+        <p class="circ-panel-body">
+          CIRC brings university teams together under demanding field conditions — mobility, autonomy,
+          manipulation, science tasks — with rules and missions that evolve each season. Past events have run near Drumheller, Alberta;
+          upcoming summers stay rooted in that same Canadian rover tradition.
+        </p>
+        <a href="https://circ.cstag.ca/" class="circ-panel-link" target="_blank" rel="noopener noreferrer">
+          circ.cstag.ca →
+        </a>
+      </div>
+      <div class="circ-panel-aside">
+        <span class="circ-panel-tag">CSTAG</span>
+        <p class="circ-panel-aside-text">
+          Competition schedules, rules updates, and volunteer calls land on the official CIRC site first — worth bookmarking if you follow Canadian planetary robotics.
+        </p>
+      </div>
+    </div>
 
     <div class="stat-row">
       <div class="page-stat">
         <div class="page-stat-num">50+</div>
-        <div class="page-stat-label">Active Members</div>
+        <div class="page-stat-label">Members</div>
       </div>
       <div class="stat-divider"></div>
       <div class="page-stat">
@@ -56,46 +92,49 @@ export function buildDOM(): void {
       </div>
       <div class="stat-divider"></div>
       <div class="page-stat">
-        <div class="page-stat-num">3</div>
-        <div class="page-stat-label">Competitions</div>
+        <div class="page-stat-num page-stat-num--compact">CIRC</div>
+        <div class="page-stat-label">Primary arena</div>
       </div>
       <div class="stat-divider"></div>
       <div class="page-stat">
-        <div class="page-stat-num">Top 10</div>
-        <div class="page-stat-label">Global Target</div>
+        <div class="page-stat-num">∞</div>
+        <div class="page-stat-label">Iteration</div>
       </div>
     </div>
 
+    <p class="section-label section-label--spaced">How we're organized</p>
+    <h3 class="section-subheading">Disciplines across one rover</h3>
+
     <div class="subteams-grid">
       <div class="subteam-card">
-        <div class="subteam-icon">⚙</div>
+        <div class="subteam-mark">Mech</div>
         <div class="subteam-name">Mechanical</div>
-        <p class="subteam-body">Chassis, rocker-bogie suspension, robotic arm, and precision tooling design.</p>
+        <p class="subteam-body">Chassis, rocker-bogie suspension, arm kinematics, and fixturing — built to survive dust, vibration, and judge scrutiny.</p>
       </div>
       <div class="subteam-card">
-        <div class="subteam-icon">💻</div>
+        <div class="subteam-mark">Soft</div>
         <div class="subteam-name">Software</div>
-        <p class="subteam-body">ROS 2, SLAM navigation, computer vision, and full-stack mission control UI.</p>
+        <p class="subteam-body">ROS&nbsp;2 stacks, navigation and perception, operator UX — shipped as commits, not slides.</p>
       </div>
       <div class="subteam-card">
-        <div class="subteam-icon">⚡</div>
+        <div class="subteam-mark">Elec</div>
         <div class="subteam-name">Electronics</div>
-        <p class="subteam-body">Custom PCBs, motor controllers, power distribution, and communication systems.</p>
+        <p class="subteam-body">Power paths, motor control, sensing interfaces — measured in watts and milliseconds.</p>
       </div>
       <div class="subteam-card">
-        <div class="subteam-icon">🔬</div>
+        <div class="subteam-mark">Sci</div>
         <div class="subteam-name">Science</div>
-        <p class="subteam-body">Spectrometry, soil sampling, UV/IR imaging, and biosignature detection.</p>
+        <p class="subteam-body">Instruments and protocols that tie telemetry back to geology questions — competition scores reward coherent payloads.</p>
       </div>
       <div class="subteam-card">
-        <div class="subteam-icon">📊</div>
+        <div class="subteam-mark">Ops</div>
         <div class="subteam-name">Business</div>
-        <p class="subteam-body">Sponsorship, outreach, documentation, and competition deliverables.</p>
+        <p class="subteam-body">Sponsors, outreach, budgets, and logistics — same deadlines as mechanical pull requests.</p>
       </div>
       <div class="subteam-card">
-        <div class="subteam-icon">🎨</div>
+        <div class="subteam-mark">Vis</div>
         <div class="subteam-name">Design</div>
-        <p class="subteam-body">CAD models, branding, web presence, and competition presentation materials.</p>
+        <p class="subteam-body">CAD storytelling, renders, kit graphics — how the rover reads when judges lean in.</p>
       </div>
     </div>
   </div>
@@ -104,11 +143,11 @@ export function buildDOM(): void {
 <!-- ─── Contact / Apply ────────────────────────────────────────────── -->
 <section id="contact" class="page-section contact-section">
   <div class="section-inner">
-    <p class="section-label">Get Involved</p>
-    <h2 class="section-heading">Join the Mission</h2>
-    <p class="section-body-wide">
-      Whether you want to fund the future of student engineering, get hands-on rover experience,
-      or just say hello — we'd love to hear from you.
+    <p class="section-label section-label--center">Get involved</p>
+    <h2 class="section-heading section-heading--center">Join the mission</h2>
+    <p class="section-lede section-lede--narrow">
+      Sponsor hardware that travels to competition, recruit from students who ship under pressure, or reach out with a question —
+      one inbox always reads mail.
     </p>
 
     <div class="contact-grid">
@@ -168,7 +207,7 @@ export function buildDOM(): void {
         <a href="#">LinkedIn</a>
         <a href="#">GitHub</a>
       </div>
-      <div class="footer-copy">© 2025 UWR. All rights reserved.</div>
+      <div class="footer-copy">© 2026 UWR. All rights reserved.</div>
     </footer>
   </div>
 </section>
@@ -180,12 +219,14 @@ let progressFill: HTMLElement;
 let sectionCounter: HTMLElement;
 let scrollHint: HTMLElement;
 let roverScene: HTMLElement;
+let heroSplash: HTMLElement | null;
 
 export function initHud(): void {
   progressFill = document.getElementById("progress-fill")!;
   sectionCounter = document.getElementById("section-counter")!;
   scrollHint = document.getElementById("scroll-hint")!;
   roverScene = document.getElementById("rover-scene")!;
+  heroSplash = document.getElementById("hero-splash");
 }
 
 export function updateHud(prog: number, activeCardIdx: number): void {
@@ -193,6 +234,11 @@ export function updateHud(prog: number, activeCardIdx: number): void {
   sectionCounter.textContent =
     activeCardIdx >= 0 ? `0${activeCardIdx + 1} / 0${N}` : "· · ·";
   scrollHint.style.opacity = prog < 0.05 ? `${1 - prog * 20}` : "0";
+  if (heroSplash) {
+    const heroOp = prog < 0.12 ? `${1 - prog * 8}` : "0";
+    heroSplash.style.opacity = heroOp;
+    heroSplash.style.pointerEvents = prog < 0.08 ? "auto" : "none";
+  }
 }
 
 // Fade the rover scene out once the user scrolls into the About section

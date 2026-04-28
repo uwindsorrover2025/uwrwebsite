@@ -10,12 +10,15 @@ import mapUrl from "./assets/map.png?url";
 // ── DOM ───────────────────────────────────────────────────────────────────────
 document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
 <nav class="nav">
-  <div class="nav-brand"><a href="/" style="color:inherit;text-decoration:none">UWR</a></div>
+  <a href="/" class="nav-brand">
+    <img src="/logo.png" alt="" width="44" height="44" class="nav-logo" />
+    <span class="nav-brand-text">UWR</span>
+  </a>
   <ul class="nav-links">
     <li><a href="/">Home</a></li>
-    <li><a href="/teams.html" style="color:var(--text)">Teams</a></li>
     <li><a href="/#about">About</a></li>
-    <li><a href="/#contact">Join Us</a></li>
+    <li><a href="/#contact">Contact</a></li>
+    <li><a href="/teams.html" class="nav-link--here">Team</a></li>
   </ul>
 </nav>
 
