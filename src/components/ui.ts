@@ -1,5 +1,6 @@
 // ─── DOM shell injection and HUD updates ─────────────────────────────────────
 import { CARDS } from "./cards";
+import { buildSponsorsMarkup } from "../sponsors";
 
 export function buildDOM(): void {
   document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
@@ -11,6 +12,7 @@ export function buildDOM(): void {
   <ul class="nav-links">
     <li><a href="/">Home</a></li>
     <li><a href="#about">About</a></li>
+    <li><a href="#sponsors">Sponsors</a></li>
     <li><a href="#contact">Contact</a></li>
     <li><a href="/teams.html">Team</a></li>
   </ul>
@@ -137,6 +139,19 @@ export function buildDOM(): void {
         <p class="subteam-body">CAD storytelling, renders, kit graphics — how the rover reads when judges lean in.</p>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- ─── Sponsors ───────────────────────────────────────────────────── -->
+<section id="sponsors" class="page-section sponsors-section">
+  <div class="section-inner section-inner--sponsors">
+    <p class="section-label section-label--center">Support</p>
+    <h2 class="section-heading section-heading--center">Our sponsors</h2>
+    <p class="section-lede section-lede--narrow sponsors-lede">
+      The teams and companies below help us machine parts, travel to competition, and keep the rover testing when it counts.
+    </p>
+    ${buildSponsorsMarkup()}
+    <p class="sponsors-cta"><a href="#contact" class="inline-link">Become a partner →</a></p>
   </div>
 </section>
 
