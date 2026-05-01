@@ -374,6 +374,15 @@ a.card-team-in:hover {
   border-bottom-color: rgba(var(--accent-rgb), 0.55);
 }
 
+.card-team-in-placeholder {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.38);
+  margin-top: 0;
+}
+
 /* ── Metrics row ──────────────────────────────────────────────────────────── */
 .card-metrics {
   display: flex;

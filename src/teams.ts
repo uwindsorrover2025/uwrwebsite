@@ -2,10 +2,18 @@
 import "./style.css";
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
-import { injectCards, updateCards, TEAM_CARDS } from "./components/cards";
+import {
+  injectCards as mountTeamCardsIntoDom,
+  updateCards as syncTeamCardsFromScroll,
+  TEAM_CARDS,
+} from "./components/cards";
 import { getWorldPosAt } from "./components/waypoints";
+import { preloadHref } from "./preload-assets";
 import roverGlbUrl from "./assets/Meshy_AI_blue_mars_rover_0409051747_texture.glb?url";
 import mapUrl from "./assets/map.png?url";
+
+preloadHref(roverGlbUrl, "fetch");
+preloadHref(mapUrl, "image");
 
 // ── DOM ───────────────────────────────────────────────────────────────────────
 document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
@@ -40,7 +48,7 @@ document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
 
 <div style="height:320vh;pointer-events:none"></div>
 `;
-injectCards(TEAM_CARDS);
+mountTeamCardsIntoDom(TEAM_CARDS);
 
 const N = TEAM_CARDS.length;
 const progressFill = document.getElementById("progress-fill")!;
@@ -178,7 +186,7 @@ function updateScroll(): void {
     clampCamTarget(state.x, state.z);
   }
 
-  const activeIdx = updateCards(prog);
+  const activeIdx = syncTeamCardsFromScroll(prog);
   progressFill.style.width = `${prog * 100}%`;
   sectionCounter.textContent =
     activeIdx >= 0 ? `0${activeIdx + 1} / 0${N}` : "· · ·";

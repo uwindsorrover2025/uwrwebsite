@@ -4,6 +4,7 @@ import jadnizamUrl from "../assets/jadnizam.png?url";
 import ranaUrl from "../assets/rana.png?url";
 import yajurUrl from "../assets/yajur.png?url";
 import alihasanUrl from "../assets/alihasan.png?url";
+import teamPhotoPlaceholderUrl from "../assets/team-photo-placeholder.svg?url";
 
 export type CardDef =
   | {
@@ -29,7 +30,7 @@ export type CardDef =
       title: string;
       subtitle: string;
       photoUrl: string;
-      linkedInUrl: string;
+      linkedInUrl?: string;
       startProgress: number;
       endProgress: number;
       side: "left" | "right";
@@ -58,12 +59,12 @@ export const CARDS: HomeCard[] = [
     id: 2,
     title: "6-Wheel Drive",
     subtitle: "Mobility System",
-    body: "Rocker-bogie suspension gives each wheel independent travel, keeping all six in contact with uneven terrain. No differential needed.",
+    body: "Rocker-bogie suspension gives each wheel independent travel, keeping all six in contact with uneven terrain. Drive corners run Neo Motor BLDC units — no differential needed.",
     stat: "6",
-    statLabel: "Motors . Independent",
-    stat2: "350",
-    stat2Label: "Nm · Peak Torque",
-    tags: ["Rocker-Bogie", "Brushless DC", "All-Terrain"],
+    statLabel: "Motors · Independent",
+    stat2: "Neo Motor",
+    stat2Label: "BLDC · Drive",
+    tags: ["Rocker-Bogie", "Neo Motor BLDC", "All-Terrain"],
     startProgress: 0.19,
     endProgress: 0.36,
     side: "left",
@@ -74,11 +75,9 @@ export const CARDS: HomeCard[] = [
     id: 3,
     title: "Autonomous Navigation",
     subtitle: "Autonomy stack",
-    body: "SLAM-based mapping and real-time computer vision let the rover traverse unknown terrain without continuous human input.",
-    stat: "30",
-    statLabel: "Hz · Obstacle Detection",
-    stat2: "12",
-    stat2Label: "ms · Reaction Latency",
+    body: "SLAM-based mapping, perception, and ROS 2 integration are underway — autonomy capability is still being brought up with bench and field testing.",
+    stat: "—",
+    statLabel: "Development in progress",
     tags: ["SLAM", "Computer Vision", "ROS 2", "LiDAR"],
     startProgress: 0.35,
     endProgress: 0.52,
@@ -89,10 +88,10 @@ export const CARDS: HomeCard[] = [
     kind: "default",
     id: 4,
     title: "Science Payload",
-    subtitle: "Research Instruments",
-    body: "Spectrometer, soil sampler, and multi-spectral cameras enable geological analysis and biosignature detection in simulated Martian environments.",
-    stat: "5",
-    statLabel: "Instruments . Onboard",
+    subtitle: "Research instruments",
+    body: "Spectrometry, sampling, and imaging instruments are being scoped and integrated — competition-ready payload workflows are still under development.",
+    stat: "—",
+    statLabel: "Development in progress",
     tags: [
       "Spectroscopy",
       "Soil Sampling",
@@ -108,18 +107,19 @@ export const CARDS: HomeCard[] = [
     kind: "default",
     id: 5,
     title: "Competition Ready",
-    subtitle: "CIRC focus",
-    body: "Iteration cycles tuned against tasks we actually run — traction on slopes, manipulation deadlines, tight mission timelines.",
-    stat: "Top 10",
-    statLabel: "Global Ranking Target",
+    subtitle: "CIRC",
+    body: "In the 2024 CIRC season we placed 1st in Ontario, 3rd in Canada, and 6th internationally.",
+    stat: "1st",
+    statLabel: "Ontario · 2024",
+    stat2: "6th",
+    stat2Label: "International · 2024",
     extra: `<div class="card-chart">
       <div class="chart-bars">
-        <div class="chart-col"><div class="chart-bar" style="--h:52%"></div><span>URC'23</span></div>
-        <div class="chart-col"><div class="chart-bar" style="--h:71%"></div><span>IRC'23</span></div>
-        <div class="chart-col chart-col--hi"><div class="chart-bar" style="--h:100%"></div><span>URC'24</span></div>
-        <div class="chart-col"><div class="chart-bar" style="--h:84%"></div><span>IRC'24</span></div>
+        <div class="chart-col chart-col--hi"><div class="chart-bar" style="--h:100%"></div><span>Ontario</span></div>
+        <div class="chart-col"><div class="chart-bar" style="--h:72%"></div><span>Canada</span></div>
+        <div class="chart-col"><div class="chart-bar" style="--h:52%"></div><span>International</span></div>
       </div>
-      <div class="chart-label">Score Progression</div>
+      <div class="chart-label">2024 season placements</div>
     </div>`,
     tags: ["CIRC", "CSTAG", "Iteration"],
     startProgress: 0.66,
@@ -133,7 +133,7 @@ export const CARDS: HomeCard[] = [
     title: "Join the Team",
     subtitle: "Open Recruitment",
     body: "Open to all UWindsor students. Real engineering experience across every discipline.",
-    stat: "12+",
+    stat: "3",
     statLabel: "Sub-teams . Open",
     stat2: "50+",
     stat2Label: "Members · Active",
@@ -150,11 +150,11 @@ export const TEAM_CARDS: Extract<CardDef, { kind: "team" }>[] = [
     kind: "team",
     id: 1,
     title: "Jad Nizam",
-    subtitle: "Team Captain",
+    subtitle: "Vice President & Team Lead",
     photoUrl: jadnizamUrl,
     linkedInUrl: "https://www.linkedin.com/in/jad-nizam-967354299/",
     startProgress: 0.02,
-    endProgress: 0.28,
+    endProgress: 0.24,
     side: "right",
     top: 26,
   },
@@ -162,23 +162,23 @@ export const TEAM_CARDS: Extract<CardDef, { kind: "team" }>[] = [
     kind: "team",
     id: 2,
     title: "Rana Usman Ali Nasir",
-    subtitle: "Engineering Lead",
+    subtitle: "President & Team Lead",
     photoUrl: ranaUrl,
-    linkedInUrl: "linkedin.com/in/rana-usman-ali-nasir/",
-    startProgress: 0.24,
-    endProgress: 0.52,
+    linkedInUrl: "https://www.linkedin.com/in/rana-usman-ali-nasir/",
+    startProgress: 0.2,
+    endProgress: 0.42,
     side: "left",
     top: 28,
   },
   {
     kind: "team",
     id: 3,
-    title: "Yajur Chaturvedi ",
-    subtitle: "Software Lead",
+    title: "Yajur Chaturvedi",
+    subtitle: "Vice President Finance & Operations",
     photoUrl: yajurUrl,
     linkedInUrl: "https://www.linkedin.com/in/yajur-chaturvedi-0a3598263/",
-    startProgress: 0.48,
-    endProgress: 0.76,
+    startProgress: 0.38,
+    endProgress: 0.6,
     side: "right",
     top: 30,
   },
@@ -186,13 +186,25 @@ export const TEAM_CARDS: Extract<CardDef, { kind: "team" }>[] = [
     kind: "team",
     id: 4,
     title: "Ali Hasan",
-    subtitle: "Electrical & Systems",
+    subtitle: "Mechanical Lead",
     photoUrl: alihasanUrl,
     linkedInUrl: "https://www.linkedin.com/in/alialz/",
-    startProgress: 0.72,
-    endProgress: 1.0,
+    startProgress: 0.56,
+    endProgress: 0.78,
     side: "left",
     top: 32,
+  },
+  {
+    kind: "team",
+    id: 5,
+    title: "Yousef Al-Wahami",
+    subtitle: "Software Lead",
+    photoUrl: teamPhotoPlaceholderUrl,
+    linkedInUrl: "https://www.linkedin.com/in/yousef-al-wahami/",
+    startProgress: 0.74,
+    endProgress: 1.0,
+    side: "right",
+    top: 34,
   },
 ];
 
@@ -217,7 +229,11 @@ function buildCardHTML(card: CardDef): string {
     <div class="card-rule"></div>
     <h3 class="card-title">${card.title}</h3>
     <div class="card-subtitle">${card.subtitle}</div>
-    <a class="card-team-in" href="${card.linkedInUrl}" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+    ${
+      card.linkedInUrl
+        ? `<a class="card-team-in" href="${card.linkedInUrl}" target="_blank" rel="noopener noreferrer">LinkedIn</a>`
+        : `<span class="card-team-in-placeholder">LinkedIn · TBD</span>`
+    }
   `;
   }
 

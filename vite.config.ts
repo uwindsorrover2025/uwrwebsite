@@ -9,6 +9,11 @@ export default defineConfig({
         main: resolve(__dirname, "index.html"),
         teams: resolve(__dirname, "teams.html"),
       },
+      output: {
+        manualChunks(id) {
+          if (id.includes("node_modules/three")) return "three";
+        },
+      },
     },
   },
 });

@@ -54,10 +54,10 @@ export function buildDOM(): void {
 <section id="about" class="page-section about-section">
   <div class="section-inner">
     <p class="section-label section-label--center">Where we compete</p>
-    <h2 class="section-heading section-heading--center">Built for CIRC<br />and what's next</h2>
+    <h2 class="section-heading section-heading--center">Built for CIRC</h2>
     <p class="section-lede">
       We design and field Mars-analog rovers as the University of Windsor Rover team — hands-on hardware,
-      embedded systems, autonomy, and science payloads — measured against real courses and real clocks at the
+      embedded systems, autonomy, and science payloads — measured exclusively against real courses and real clocks at the
       <a href="https://circ.cstag.ca/" class="inline-link" target="_blank" rel="noopener noreferrer">Canadian International Rover Challenge</a>
       (CIRC), organized by CSTAG. When the gates open, every subsystem matters.
     </p>
@@ -89,13 +89,13 @@ export function buildDOM(): void {
       </div>
       <div class="stat-divider"></div>
       <div class="page-stat">
-        <div class="page-stat-num">12+</div>
+        <div class="page-stat-num">3</div>
         <div class="page-stat-label">Sub-teams</div>
       </div>
       <div class="stat-divider"></div>
       <div class="page-stat">
         <div class="page-stat-num page-stat-num--compact">CIRC</div>
-        <div class="page-stat-label">Primary arena</div>
+        <div class="page-stat-label">Arena</div>
       </div>
       <div class="stat-divider"></div>
       <div class="page-stat">
@@ -191,7 +191,7 @@ export function buildDOM(): void {
         </p>
         <ul class="contact-perks">
           <li>Hands-on rover engineering</li>
-          <li>12+ sub-teams to choose from</li>
+          <li>3 sub-teams to choose from</li>
           <li>International competition travel</li>
           <li>Industry connections + co-op support</li>
         </ul>

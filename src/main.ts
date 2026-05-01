@@ -3,6 +3,10 @@ import { buildDOM, initHud, updateHud, updateSceneVisibility } from "./component
 import { injectCards, updateCards } from "./components/cards";
 import { setupScene, startRenderLoop, handleResize } from "./components/scene";
 import { loadRover, updateRover } from "./components/rover";
+import { preloadHref } from "./preload-assets";
+import homeRoverGlbUrl from "./assets/GazeboV2.glb?url";
+
+preloadHref(homeRoverGlbUrl, "fetch");
 
 buildDOM();
 injectCards();
