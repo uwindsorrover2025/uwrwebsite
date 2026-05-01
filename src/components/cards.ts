@@ -1,6 +1,7 @@
 // ─── Info cards data, injection, and per-frame opacity updates ────────────────
 
 import jadnizamUrl from "../assets/jadnizam.png?url";
+import yousefUrl from "../assets/yousef.jpg?url";
 import ranaUrl from "../assets/rana.png?url";
 import yajurUrl from "../assets/yajur.png?url";
 import alihasanUrl from "../assets/alihasan.png?url";
@@ -199,7 +200,7 @@ export const TEAM_CARDS: Extract<CardDef, { kind: "team" }>[] = [
     id: 5,
     title: "Yousef Al-Wahami",
     subtitle: "Software Lead",
-    photoUrl: teamPhotoPlaceholderUrl,
+    photoUrl: yousefUrl,
     linkedInUrl: "https://www.linkedin.com/in/yousef-al-wahami/",
     startProgress: 0.74,
     endProgress: 1.0,
@@ -301,6 +302,9 @@ export function updateCards(prog: number): number {
     el.style.opacity = `${op}`;
     el.style.transform =
       op > 0.01 ? "translateX(0) scale(1)" : `translateX(${dir}) scale(0.96)`;
+    if (card.kind === "team") {
+      el.style.pointerEvents = op > 0.01 ? "auto" : "none";
+    }
   });
   return activeIdx;
 }

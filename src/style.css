@@ -327,7 +327,6 @@ body {
 }
 
 .info-card--team {
-  pointer-events: auto;
   padding-top: 22px;
 }
 
