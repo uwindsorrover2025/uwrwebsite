@@ -539,6 +539,8 @@ a.card-team-in:hover {
   align-items: center;
   gap: 20px;
   z-index: 50;
+  /* Let clicks reach info cards behind this strip (HUD is decorative here). */
+  pointer-events: none;
 }
 
 .scroll-hint {

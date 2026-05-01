@@ -5,7 +5,6 @@ import yousefUrl from "../assets/yousef.jpg?url";
 import ranaUrl from "../assets/rana.png?url";
 import yajurUrl from "../assets/yajur.png?url";
 import alihasanUrl from "../assets/alihasan.png?url";
-import teamPhotoPlaceholderUrl from "../assets/team-photo-placeholder.svg?url";
 
 export type CardDef =
   | {
@@ -289,21 +288,26 @@ export function injectCards(list: CardDef[] = CARDS): void {
 }
 
 export function updateCards(prog: number): number {
+  const ops = activeCards.map((card) => cardOpacity(card, prog));
   let activeIdx = -1,
     bestOpacity = 0;
-  activeCards.forEach((card, i) => {
-    const op = cardOpacity(card, prog);
+  ops.forEach((op, i) => {
     if (op > bestOpacity) {
       bestOpacity = op;
       activeIdx = i;
     }
+  });
+
+  activeCards.forEach((card, i) => {
+    const op = ops[i];
     const el = cardEls[i];
     const dir = card.side === "left" ? "-32px" : "32px";
     el.style.opacity = `${op}`;
     el.style.transform =
       op > 0.01 ? "translateX(0) scale(1)" : `translateX(${dir}) scale(0.96)`;
     if (card.kind === "team") {
-      el.style.pointerEvents = op > 0.01 ? "auto" : "none";
+      el.style.pointerEvents =
+        activeIdx === i && op > 0.01 ? "auto" : "none";
     }
   });
   return activeIdx;
