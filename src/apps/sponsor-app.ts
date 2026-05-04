@@ -1,5 +1,3 @@
-import "./style.css";
-
 const DONATE_URL =
   "https://www.uwindsor.ca/supportuwindsor/donate-other?BBFund=4894&BBHideOtherFunds=1";
 
@@ -14,7 +12,8 @@ function benefitRow(label: string, tiers: boolean[]): string {
   return `<tr><th scope="row" class="sponsor-matrix-benefit">${label}</th>${cells}</tr>`;
 }
 
-document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
+export function mountSponsor(): void {
+  document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
 <nav class="nav">
   <a href="./" class="nav-brand">
     <img src="./logo.png" alt="" width="44" height="44" class="nav-logo" />
@@ -22,11 +21,11 @@ document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
   </a>
   <ul class="nav-links">
     <li><a href="./">Home</a></li>
-    <li><a href="./index.html#about">About</a></li>
-    <li><a href="./index.html#sponsors">Sponsors</a></li>
-    <li><a href="./index.html#contact">Contact</a></li>
-    <li><a href="./teams.html">Team</a></li>
-    <li><a href="./sponsor.html" class="nav-link--here">Partner</a></li>
+    <li><a href="./#about">About</a></li>
+    <li><a href="./#sponsors">Sponsors</a></li>
+    <li><a href="./#contact">Contact</a></li>
+    <li><a href="./teams">Team</a></li>
+    <li><a href="./sponsor" class="nav-link--here">Partner</a></li>
   </ul>
 </nav>
 
@@ -126,60 +125,60 @@ document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
       <p class="sponsor-footnote">
         Questions? Reach us at
         <a href="mailto:uwr@uwindsor.ca" class="inline-link">uwr@uwindsor.ca</a>
-        or return to <a href="./index.html#contact" class="inline-link">contact</a> on the main site.
+        or return to <a href="./#contact" class="inline-link">contact</a> on the main site.
       </p>
     </section>
   </div>
 </main>
 `;
 
-const stepTiers = document.getElementById("sponsor-step-tiers")!;
-const stepMethods = document.getElementById("sponsor-step-methods")!;
-const btnContinue = document.getElementById("sponsor-btn-continue")!;
-const btnBackTiers = document.getElementById("sponsor-btn-back-tiers")!;
-const detailEl = document.getElementById("sponsor-method-detail")!;
-const optionButtons = Array.from(
-  document.querySelectorAll<HTMLButtonElement>("[data-method]"),
-);
+  const stepTiers = document.getElementById("sponsor-step-tiers")!;
+  const stepMethods = document.getElementById("sponsor-step-methods")!;
+  const btnContinue = document.getElementById("sponsor-btn-continue")!;
+  const btnBackTiers = document.getElementById("sponsor-btn-back-tiers")!;
+  const detailEl = document.getElementById("sponsor-method-detail")!;
+  const optionButtons = Array.from(
+    document.querySelectorAll<HTMLButtonElement>("[data-method]"),
+  );
 
-function showTiers(): void {
-  stepTiers.hidden = false;
-  stepTiers.classList.remove("sponsor-panel--hidden");
-  stepMethods.hidden = true;
-  stepMethods.classList.add("sponsor-panel--hidden");
-  clearMethodSelection();
-}
-
-function showMethods(): void {
-  stepTiers.hidden = true;
-  stepTiers.classList.add("sponsor-panel--hidden");
-  stepMethods.hidden = false;
-  stepMethods.classList.remove("sponsor-panel--hidden");
-  stepMethods.scrollIntoView({ behavior: "smooth", block: "start" });
-}
-
-function clearMethodSelection(): void {
-  for (const b of optionButtons) {
-    b.classList.remove("sponsor-option-card--selected");
-    b.setAttribute("aria-checked", "false");
+  function showTiers(): void {
+    stepTiers.hidden = false;
+    stepTiers.classList.remove("sponsor-panel--hidden");
+    stepMethods.hidden = true;
+    stepMethods.classList.add("sponsor-panel--hidden");
+    clearMethodSelection();
   }
-  detailEl.innerHTML = "";
-  detailEl.hidden = true;
-  detailEl.classList.add("sponsor-detail--hidden");
-}
 
-function selectMethod(btn: HTMLButtonElement, method: string): void {
-  clearMethodSelection();
-  btn.classList.add("sponsor-option-card--selected");
-  btn.setAttribute("aria-checked", "true");
-  detailEl.innerHTML = detailMarkup(method);
-  detailEl.hidden = false;
-  detailEl.classList.remove("sponsor-detail--hidden");
-}
+  function showMethods(): void {
+    stepTiers.hidden = true;
+    stepTiers.classList.add("sponsor-panel--hidden");
+    stepMethods.hidden = false;
+    stepMethods.classList.remove("sponsor-panel--hidden");
+    stepMethods.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
 
-function detailMarkup(method: string): string {
-  if (method === "link") {
-    return `
+  function clearMethodSelection(): void {
+    for (const b of optionButtons) {
+      b.classList.remove("sponsor-option-card--selected");
+      b.setAttribute("aria-checked", "false");
+    }
+    detailEl.innerHTML = "";
+    detailEl.hidden = true;
+    detailEl.classList.add("sponsor-detail--hidden");
+  }
+
+  function selectMethod(btn: HTMLButtonElement, method: string): void {
+    clearMethodSelection();
+    btn.classList.add("sponsor-option-card--selected");
+    btn.setAttribute("aria-checked", "true");
+    detailEl.innerHTML = detailMarkup(method);
+    detailEl.hidden = false;
+    detailEl.classList.remove("sponsor-detail--hidden");
+  }
+
+  function detailMarkup(method: string): string {
+    if (method === "link") {
+      return `
       <div class="sponsor-detail-inner">
         <h3 class="sponsor-detail-heading">1. Donation through the University</h3>
         <p class="sponsor-detail-body">
@@ -206,9 +205,9 @@ function detailMarkup(method: string): string {
           For more information, feel free to <a href="mailto:uwr@uwindsor.ca" class="inline-link">contact us</a>.
         </p>
       </div>`;
-  }
-  if (method === "cheque") {
-    return `
+    }
+    if (method === "cheque") {
+      return `
       <div class="sponsor-detail-inner">
         <h3 class="sponsor-detail-heading">2. Donate by cheque</h3>
         <p class="sponsor-detail-body">
@@ -228,9 +227,9 @@ function detailMarkup(method: string): string {
           Email: <a href="mailto:uwr@uwindsor.ca" class="inline-link">uwr@uwindsor.ca</a>
         </p>
       </div>`;
-  }
-  if (method === "inkind") {
-    return `
+    }
+    if (method === "inkind") {
+      return `
       <div class="sponsor-detail-inner">
         <h3 class="sponsor-detail-heading">3. In-kind donations</h3>
         <p class="sponsor-detail-heading sponsor-detail-sub">Material, services &amp; equipment</p>
@@ -244,16 +243,17 @@ function detailMarkup(method: string): string {
           <a href="mailto:uwr@uwindsor.ca" class="inline-link">uwr@uwindsor.ca</a>.
         </p>
       </div>`;
+    }
+    return "";
   }
-  return "";
-}
 
-btnContinue.addEventListener("click", () => showMethods());
-btnBackTiers.addEventListener("click", () => showTiers());
+  btnContinue.addEventListener("click", () => showMethods());
+  btnBackTiers.addEventListener("click", () => showTiers());
 
-for (const btn of optionButtons) {
-  btn.addEventListener("click", () => {
-    const method = btn.dataset.method ?? "";
-    selectMethod(btn, method);
-  });
+  for (const btn of optionButtons) {
+    btn.addEventListener("click", () => {
+      const method = btn.dataset.method ?? "";
+      selectMethod(btn, method);
+    });
+  }
 }

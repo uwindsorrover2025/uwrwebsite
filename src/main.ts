@@ -1,38 +1,17 @@
 import "./style.css";
-import { buildDOM, initHud, updateHud, updateSceneVisibility } from "./components/ui";
-import { injectCards, updateCards } from "./components/cards";
-import { setupScene, startRenderLoop, handleResize } from "./components/scene";
-import { loadRover, updateRover } from "./components/rover";
-import { preloadHref } from "./preload-assets";
-import homeRoverGlbUrl from "./assets/GazeboV2.glb?url";
+import { getRouteFromLocation } from "./route";
 
-preloadHref(homeRoverGlbUrl, "fetch");
+const route = getRouteFromLocation();
 
-buildDOM();
-injectCards();
-initHud();
-setupScene(document.getElementById("main-canvas") as HTMLCanvasElement);
-loadRover(() => updateScroll());
-startRenderLoop();
-
-function getRoverProgress(): number {
-  const scrollSpaceEl = document.querySelector(".scroll-space") as HTMLElement;
-  const h = scrollSpaceEl.offsetHeight - window.innerHeight;
-  return h > 0 ? Math.min(1, Math.max(0, window.scrollY / h)) : 0;
-}
-
-function getScrollSpaceH(): number {
-  return (document.querySelector(".scroll-space") as HTMLElement).offsetHeight;
-}
-
-function updateScroll(): void {
-  const prog = getRoverProgress();
-  updateRover(prog);
-  const activeIdx = updateCards(prog);
-  updateHud(prog, activeIdx);
-  updateSceneVisibility(window.scrollY, getScrollSpaceH());
-}
-
-window.addEventListener("scroll", updateScroll, { passive: true });
-window.addEventListener("resize", handleResize);
-updateScroll();
+void (async () => {
+  if (route === "teams") {
+    const { mountTeams } = await import("./apps/teams-app");
+    mountTeams();
+  } else if (route === "sponsor") {
+    const { mountSponsor } = await import("./apps/sponsor-app");
+    mountSponsor();
+  } else {
+    const { mountHome } = await import("./apps/home");
+    mountHome();
+  }
+})();

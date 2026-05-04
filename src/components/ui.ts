@@ -14,7 +14,7 @@ export function buildDOM(): void {
     <li><a href="#about">About</a></li>
     <li><a href="#sponsors">Sponsors</a></li>
     <li><a href="#contact">Contact</a></li>
-    <li><a href="./teams.html">Team</a></li>
+    <li><a href="./teams">Team</a></li>
   </ul>
 </nav>
 
@@ -179,7 +179,7 @@ export function buildDOM(): void {
           <li>Competition day recognition</li>
           <li>Social media + web presence</li>
         </ul>
-        <a href="./sponsor.html" class="cta-btn">Sponsor Us →</a>
+        <a href="./sponsor" class="cta-btn">Sponsor Us →</a>
       </div>
 
       <div class="contact-card contact-card--primary">

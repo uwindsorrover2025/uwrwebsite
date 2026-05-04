@@ -2,6 +2,23 @@
   command = "npm run build"
   publish = "dist"
 
+# Old multi-page URLs → client routes (single index.html)
+[[redirects]]
+  from = "/teams.html"
+  to = "/teams"
+  status = 301
+
+[[redirects]]
+  from = "/sponsor.html"
+  to = "/sponsor"
+  status = 301
+
+# SPA: /teams and /sponsor are not files; serve app shell
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
 [[headers]]
   for = "/assets/*.glb"
   [headers.values]
