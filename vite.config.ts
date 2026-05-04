@@ -8,6 +8,7 @@ export default defineConfig({
       input: {
         main: resolve(__dirname, "index.html"),
         teams: resolve(__dirname, "teams.html"),
+        sponsor: resolve(__dirname, "sponsor.html"),
       },
       output: {
         manualChunks(id) {

@@ -179,7 +179,7 @@ export function buildDOM(): void {
           <li>Competition day recognition</li>
           <li>Social media + web presence</li>
         </ul>
-        <a href="mailto:sponsorship@uwrover.ca" class="cta-btn">Sponsor Us →</a>
+        <a href="/sponsor.html" class="cta-btn">Sponsor Us →</a>
       </div>
 
       <div class="contact-card contact-card--primary">
@@ -211,7 +211,7 @@ export function buildDOM(): void {
           <li>Demo + outreach events</li>
           <li>General questions</li>
         </ul>
-        <a href="mailto:info@uwrover.ca" class="cta-btn">Contact Us →</a>
+        <a href="mailto:uwr@uwindsor.ca" class="cta-btn">Contact Us →</a>
       </div>
     </div>
 
