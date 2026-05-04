@@ -27,7 +27,7 @@ export function mountTeams(): void {
     <li><a href="./#sponsors">Sponsors</a></li>
     <li><a href="./#contact">Contact</a></li>
     <li><a href="./teams" class="nav-link--here">Team</a></li>
-    <li><a href="./sponsor">Partner</a></li>
+    <li><a href="./partner">Partner</a></li>
   </ul>
 </nav>
 

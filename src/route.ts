@@ -6,15 +6,17 @@ function normalizeSegment(seg: string): string {
 }
 
 /**
- * Pathname first (`/teams`, `/repo/sponsor`, legacy `*.html`).
- * Hash fallback (`#/teams`) for hosts that cannot rewrite to index.html (e.g. GitHub Pages project sites).
+ * Pathname first (`/teams`, `/partner` or `/sponsor`, `/repo/...`).
+ * Hash fallback (`#/teams`, `#/partner`) for static hosts without SPA rewrites.
+ *
+ * Note: use `/partner` in links when possible — some privacy blocklists match `/sponsor*`.
  */
 export function getRouteFromLocation(): AppRoute {
   const path = window.location.pathname.replace(/\/+$/, "").toLowerCase();
   const rawSeg = path.split("/").pop() ?? "";
   const seg = normalizeSegment(rawSeg);
   if (seg === "teams") return "teams";
-  if (seg === "sponsor") return "sponsor";
+  if (seg === "sponsor" || seg === "partner") return "sponsor";
 
   const fromHash = window.location.hash
     .replace(/^#\/?/, "")
@@ -23,7 +25,7 @@ export function getRouteFromLocation(): AppRoute {
   if (fromHash) {
     const h = normalizeSegment(fromHash);
     if (h === "teams") return "teams";
-    if (h === "sponsor") return "sponsor";
+    if (h === "sponsor" || h === "partner") return "sponsor";
   }
 
   return "home";

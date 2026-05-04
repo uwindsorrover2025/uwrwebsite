@@ -179,7 +179,7 @@ export function buildDOM(): void {
           <li>Competition day recognition</li>
           <li>Social media + web presence</li>
         </ul>
-        <a href="./sponsor" class="cta-btn">Sponsor Us →</a>
+        <a href="./partner" class="cta-btn">Sponsor Us →</a>
       </div>
 
       <div class="contact-card contact-card--primary">
