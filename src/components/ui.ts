@@ -5,16 +5,16 @@ import { buildSponsorsMarkup } from "../sponsors";
 export function buildDOM(): void {
   document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
 <nav class="nav">
-  <a href="/" class="nav-brand">
-    <img src="/logo.png" alt="" width="44" height="44" class="nav-logo" />
+  <a href="./" class="nav-brand">
+    <img src="./logo.png" alt="" width="44" height="44" class="nav-logo" />
     <span class="nav-brand-text">UWR</span>
   </a>
   <ul class="nav-links">
-    <li><a href="/">Home</a></li>
+    <li><a href="./">Home</a></li>
     <li><a href="#about">About</a></li>
     <li><a href="#sponsors">Sponsors</a></li>
     <li><a href="#contact">Contact</a></li>
-    <li><a href="/teams.html">Team</a></li>
+    <li><a href="./teams.html">Team</a></li>
   </ul>
 </nav>
 
@@ -179,7 +179,7 @@ export function buildDOM(): void {
           <li>Competition day recognition</li>
           <li>Social media + web presence</li>
         </ul>
-        <a href="/sponsor.html" class="cta-btn">Sponsor Us →</a>
+        <a href="./sponsor.html" class="cta-btn">Sponsor Us →</a>
       </div>
 
       <div class="contact-card contact-card--primary">

@@ -1,15 +1,15 @@
-/** Logos live in `public/sponsors/` and are served as `/sponsors/<filename>`. */
+/** Logos live in `public/sponsors/` and are served as `./sponsors/<filename>` (relative to HTML at site root). */
 
 export type Sponsor = {
   name: string;
-  /** e.g. `/sponsors/acme.png` */
+  /** e.g. `./sponsors/acme.png` */
   logo: string;
   href?: string;
 };
 
 /** Encode filenames with spaces etc. for valid URLs */
 function sponsorLogo(filename: string): string {
-  return `/sponsors/${encodeURIComponent(filename)}`;
+  return `./sponsors/${encodeURIComponent(filename)}`;
 }
 
 export const SPONSORS: Sponsor[] = [

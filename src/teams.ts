@@ -18,16 +18,17 @@ preloadHref(mapUrl, "image");
 // ── DOM ───────────────────────────────────────────────────────────────────────
 document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
 <nav class="nav">
-  <a href="/" class="nav-brand">
-    <img src="/logo.png" alt="" width="44" height="44" class="nav-logo" />
+  <a href="./" class="nav-brand">
+    <img src="./logo.png" alt="" width="44" height="44" class="nav-logo" />
     <span class="nav-brand-text">UWR</span>
   </a>
   <ul class="nav-links">
-    <li><a href="/">Home</a></li>
-    <li><a href="/#about">About</a></li>
-    <li><a href="/#sponsors">Sponsors</a></li>
-    <li><a href="/#contact">Contact</a></li>
-    <li><a href="/teams.html" class="nav-link--here">Team</a></li>
+    <li><a href="./">Home</a></li>
+    <li><a href="./index.html#about">About</a></li>
+    <li><a href="./index.html#sponsors">Sponsors</a></li>
+    <li><a href="./index.html#contact">Contact</a></li>
+    <li><a href="./teams.html" class="nav-link--here">Team</a></li>
+    <li><a href="./sponsor.html">Partner</a></li>
   </ul>
 </nav>
 

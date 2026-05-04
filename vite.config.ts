@@ -2,6 +2,8 @@ import { defineConfig } from "vite";
 import { resolve } from "path";
 
 export default defineConfig({
+  /** Relative URLs so multi-page builds work when the site is served from a subpath (e.g. GitHub Pages project sites). */
+  base: "./",
   assetsInclude: ["**/*.glb"],
   build: {
     rollupOptions: {

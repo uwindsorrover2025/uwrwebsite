@@ -16,17 +16,17 @@ function benefitRow(label: string, tiers: boolean[]): string {
 
 document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
 <nav class="nav">
-  <a href="/" class="nav-brand">
-    <img src="/logo.png" alt="" width="44" height="44" class="nav-logo" />
+  <a href="./" class="nav-brand">
+    <img src="./logo.png" alt="" width="44" height="44" class="nav-logo" />
     <span class="nav-brand-text">UWR</span>
   </a>
   <ul class="nav-links">
-    <li><a href="/">Home</a></li>
-    <li><a href="/#about">About</a></li>
-    <li><a href="/#sponsors">Sponsors</a></li>
-    <li><a href="/#contact">Contact</a></li>
-    <li><a href="/teams.html">Team</a></li>
-    <li><a href="/sponsor.html" class="nav-link--here">Partner</a></li>
+    <li><a href="./">Home</a></li>
+    <li><a href="./index.html#about">About</a></li>
+    <li><a href="./index.html#sponsors">Sponsors</a></li>
+    <li><a href="./index.html#contact">Contact</a></li>
+    <li><a href="./teams.html">Team</a></li>
+    <li><a href="./sponsor.html" class="nav-link--here">Partner</a></li>
   </ul>
 </nav>
 
@@ -126,7 +126,7 @@ document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
       <p class="sponsor-footnote">
         Questions? Reach us at
         <a href="mailto:uwr@uwindsor.ca" class="inline-link">uwr@uwindsor.ca</a>
-        or return to <a href="/#contact" class="inline-link">contact</a> on the main site.
+        or return to <a href="./index.html#contact" class="inline-link">contact</a> on the main site.
       </p>
     </section>
   </div>
