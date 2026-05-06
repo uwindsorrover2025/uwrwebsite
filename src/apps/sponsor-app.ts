@@ -23,7 +23,7 @@ export function mountSponsor(): void {
     <li><a href="./">Home</a></li>
     <li><a href="/#about">About</a></li>
     <li><a href="/#sponsors">Sponsors</a></li>
-    <li><a href="./partners" class="nav-link--here">Partner</a></li>
+    <li><a href="./partnerships" class="nav-link--here">Partnerships</a></li>
     <li><a href="/#contact">Contact</a></li>
     <li><a href="./teams">Team</a></li>
   </ul>
@@ -34,10 +34,10 @@ export function mountSponsor(): void {
     <section id="sponsor-step-tiers" class="sponsor-panel" aria-labelledby="sponsor-tiers-heading">
       <p class="section-label section-label--center">Support</p>
       <h1 id="sponsor-tiers-heading" class="section-heading section-heading--center">
-        Partnership opportunities
+        Partnership Opportunities
       </h1>
       <p class="section-lede section-lede--narrow sponsor-tagline">
-        Fuel innovation, gain recognition — compare tiers below, then choose how you would like to give.
+        Support innovation, gain recognition, and compare the sponsorship tiers below to choose how you would like to contribute.
       </p>
 
       <div class="sponsor-table-wrap">
@@ -93,10 +93,10 @@ export function mountSponsor(): void {
       hidden
     >
       <button type="button" class="sponsor-back text-btn" id="sponsor-btn-back-tiers">
-        ← Back to tiers
+        ← Back to Tiers
       </button>
       <h2 id="sponsor-methods-heading" class="sponsor-methods-title">
-        How would you like to give?
+        How Would You Like to Give?
       </h2>
       <p class="sponsor-methods-lede">
         Pick an option below for step-by-step instructions.
@@ -105,18 +105,18 @@ export function mountSponsor(): void {
       <div class="sponsor-option-grid" role="radiogroup" aria-label="Donation method">
         <button type="button" class="sponsor-option-card" role="radio" aria-checked="false" data-method="link">
           <span class="sponsor-option-key">(i)</span>
-          <span class="sponsor-option-label">Donate through link</span>
-          <span class="sponsor-option-hint">University donation portal</span>
+          <span class="sponsor-option-label">Donate Through Link</span>
+          <span class="sponsor-option-hint">University Donation Portal</span>
         </button>
         <button type="button" class="sponsor-option-card" role="radio" aria-checked="false" data-method="cheque">
           <span class="sponsor-option-key">(ii)</span>
-          <span class="sponsor-option-label">Donate by cheque</span>
-          <span class="sponsor-option-hint">Mail payable to UWSA</span>
+          <span class="sponsor-option-label">Donate by Cheque</span>
+          <span class="sponsor-option-hint">Mail Payable to UWSA</span>
         </button>
         <button type="button" class="sponsor-option-card" role="radio" aria-checked="false" data-method="inkind">
           <span class="sponsor-option-key">(iii)</span>
-          <span class="sponsor-option-label">In-kind donation</span>
-          <span class="sponsor-option-hint">Materials, services &amp; equipment</span>
+          <span class="sponsor-option-label">In-kind Donation</span>
+          <span class="sponsor-option-hint">Materials, Services, and Equipment</span>
         </button>
       </div>
 
@@ -180,7 +180,7 @@ export function mountSponsor(): void {
     if (method === "link") {
       return `
       <div class="sponsor-detail-inner">
-        <h3 class="sponsor-detail-heading">1. Donation through the University</h3>
+        <h3 class="sponsor-detail-heading">1. Donation Through the University</h3>
         <p class="sponsor-detail-body">
           Donate to the team through the University of Windsor using the official portal.
         </p>
@@ -209,7 +209,7 @@ export function mountSponsor(): void {
     if (method === "cheque") {
       return `
       <div class="sponsor-detail-inner">
-        <h3 class="sponsor-detail-heading">2. Donate by cheque</h3>
+        <h3 class="sponsor-detail-heading">2. Donate by Cheque</h3>
         <p class="sponsor-detail-body">
           Mail a cheque payable to the <strong>University of Windsor Students' Alliance</strong> and note our team's name
           (<strong>University of Windsor Rover Team</strong>) in the memo.
@@ -231,8 +231,8 @@ export function mountSponsor(): void {
     if (method === "inkind") {
       return `
       <div class="sponsor-detail-inner">
-        <h3 class="sponsor-detail-heading">3. In-kind donations</h3>
-        <p class="sponsor-detail-heading sponsor-detail-sub">Material, services &amp; equipment</p>
+        <h3 class="sponsor-detail-heading">3. In-kind Donations</h3>
+        <p class="sponsor-detail-heading sponsor-detail-sub">Material, Services, and Equipment</p>
         <p class="sponsor-detail-body">
           Tax receipts are available for equipment or material donations over <strong>$4,500</strong> in value.
           Under CRA rules, gifts of time, labour, or services are not eligible for tax receipts.

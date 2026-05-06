@@ -10,16 +10,27 @@
 
 [[redirects]]
   from = "/sponsor.html"
-  to = "/partner"
+  to = "/partnerships"
   status = 301
 
-# Optional: canonical partner URL (many blocklists match /sponsor*)
+# Legacy partner URLs → canonical
+[[redirects]]
+  from = "/partner"
+  to = "/partnerships"
+  status = 301
+
+[[redirects]]
+  from = "/partners"
+  to = "/partnerships"
+  status = 301
+
+# Optional: canonical partnerships URL (many blocklists match /sponsor*)
 [[redirects]]
   from = "/sponsor"
-  to = "/partner"
+  to = "/partnerships"
   status = 302
 
-# SPA: client routes (/teams, /partner) are not files; serve app shell
+# SPA: client routes (/teams, /partnerships, …) are not files; serve app shell
 [[redirects]]
   from = "/*"
   to = "/index.html"
