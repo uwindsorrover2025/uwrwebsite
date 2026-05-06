@@ -9,6 +9,7 @@ export function mountHome(): void {
   preloadHref(homeRoverGlbUrl, "fetch");
 
   buildDOM();
+  syncScrollToHash();
   injectCards();
   initHud();
   setupScene(document.getElementById("main-canvas") as HTMLCanvasElement);
@@ -36,4 +37,18 @@ export function mountHome(): void {
   window.addEventListener("scroll", updateScroll, { passive: true });
   window.addEventListener("resize", handleResize);
   updateScroll();
+}
+
+function syncScrollToHash(): void {
+  const hash = window.location.hash;
+  if (!hash) return;
+  const target = document.querySelector(hash) as HTMLElement | null;
+  if (!target) return;
+
+  // DOM is injected at runtime; delay anchor jump until layout is stable.
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      target.scrollIntoView({ behavior: "auto", block: "start" });
+    });
+  });
 }
