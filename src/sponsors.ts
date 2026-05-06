@@ -28,7 +28,7 @@ export const SPONSORS: Sponsor[] = [
   { name: "SOLIDWORKS", logo: sponsorLogo("SOLIDWORKS.png") },
   { name: "University of Windsor", logo: sponsorLogo("UWINDSOR.png") },
   { name: "Valiant TMS", logo: sponsorLogo("VALIANT.png") },
-  { name: "VGMS", logo: sponsorLogo("VGMSVGLOGO.svg") },
+  { name: "VGMS", logo: sponsorLogo("VGMSVGLOGO2.png") },
   { name: "VSC", logo: sponsorLogo("vsc_transparent.png") },
   { name: "Watt & Volt", logo: sponsorLogo("WATT N VOLT.png") },
 ];
