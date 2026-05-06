@@ -151,7 +151,7 @@ export function buildDOM(): void {
       The teams and companies below help us machine parts, travel to competition, and keep the rover testing when it counts.
     </p>
     ${buildSponsorsMarkup()}
-    <p class="sponsors-cta"><a href="#contact" class="inline-link">Become a partner →</a></p>
+    <p class="sponsors-cta"><a href="./partner" class="inline-link">Become a partner →</a></p>
   </div>
 </section>
 
