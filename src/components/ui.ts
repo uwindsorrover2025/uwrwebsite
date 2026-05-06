@@ -10,7 +10,7 @@ export function buildDOM(): void {
     <span class="nav-brand-text">UWR</span>
   </a>
   <ul class="nav-links">
-    <li><a href="./">Home</a></li>
+    <li><a href="#app">Home</a></li>
     <li><a href="#about">About</a></li>
     <li><a href="#sponsors">Sponsors</a></li>
     <li><a href="./partners">Partner</a></li>
