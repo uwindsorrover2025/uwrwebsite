@@ -927,8 +927,8 @@ a.card-team-in:hover {
   min-height: 72px;
   padding: 16px 20px;
   border-radius: 14px;
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid #262626;
+  background: linear-gradient(180deg, #161616 0%, #0f0f10 100%);
   overflow: visible;
   transition:
     border-color 0.2s,
