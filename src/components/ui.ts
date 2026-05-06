@@ -218,9 +218,9 @@ export function buildDOM(): void {
     <footer class="site-footer">
       <div class="footer-brand">UWR — University of Windsor Rover Team</div>
       <div class="footer-links">
-        <a href="#">Instagram</a>
-        <a href="#">LinkedIn</a>
-        <a href="#">GitHub</a>
+        <a href="https://www.instagram.com/uwr.team/" target="_blank" rel="noopener noreferrer">Instagram</a>
+        <a href="https://www.linkedin.com/company/uwrteam/posts/?feedView=all" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <a href="https://github.com/uwindsorrover2025" target="_blank" rel="noopener noreferrer">GitHub</a>
       </div>
       <div class="footer-copy">© 2026 UWR. All rights reserved.</div>
     </footer>
