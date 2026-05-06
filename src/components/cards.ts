@@ -203,7 +203,7 @@ export const TEAM_CARDS: Extract<CardDef, { kind: "team" }>[] = [
     linkedInUrl: "https://www.linkedin.com/in/yajur-chaturvedi-0a3598263/",
     startProgress: 0.74,
     endProgress: 1.0,
-    side: "right",
+    side: "left",
     top: 30,
   },
 ];
