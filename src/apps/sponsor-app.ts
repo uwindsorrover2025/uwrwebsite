@@ -208,7 +208,7 @@ export function mountSponsor(): void {
     }
     if (method === "cheque") {
       return `
-      <div class="sponsor-detail-inner">
+      <div class="sponsor-detail-inner sponsor-detail-inner--full">
         <h3 class="sponsor-detail-heading">2. Donate by Cheque</h3>
         <p class="sponsor-detail-body">
           Mail a cheque payable to the <strong>University of Windsor Students' Alliance</strong> and note our team's name
@@ -230,7 +230,7 @@ export function mountSponsor(): void {
     }
     if (method === "inkind") {
       return `
-      <div class="sponsor-detail-inner">
+      <div class="sponsor-detail-inner sponsor-detail-inner--full">
         <h3 class="sponsor-detail-heading">3. In-kind Donations</h3>
         <p class="sponsor-detail-heading sponsor-detail-sub">Material, Services, and Equipment</p>
         <p class="sponsor-detail-body">

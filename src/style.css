@@ -1436,6 +1436,11 @@ a.sponsors-link:hover {
   max-width: 640px;
 }
 
+/* Cheque + in-kind: use full width of the detail panel */
+.sponsor-detail-inner--full {
+  max-width: none;
+}
+
 .sponsor-detail-heading {
   font-family: var(--font-serif);
   font-size: 1.35rem;
