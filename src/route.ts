@@ -6,17 +6,17 @@ function normalizeSegment(seg: string): string {
 }
 
 /**
- * Pathname first (`/teams`, `/partner` or `/sponsor`, `/repo/...`).
- * Hash fallback (`#/teams`, `#/partner`) for static hosts without SPA rewrites.
+ * Pathname first (`/teams`, `/partners` or `/partner` or `/sponsor`, `/repo/...`).
+ * Hash fallback (`#/teams`, `#/partners` or `#/partner`) for static hosts without SPA rewrites.
  *
- * Note: use `/partner` in links when possible — some privacy blocklists match `/sponsor*`.
+ * Note: `/partners`, `/partner`, and `/sponsor` all resolve to the sponsor route.
  */
 export function getRouteFromLocation(): AppRoute {
   const path = window.location.pathname.replace(/\/+$/, "").toLowerCase();
   const rawSeg = path.split("/").pop() ?? "";
   const seg = normalizeSegment(rawSeg);
   if (seg === "teams") return "teams";
-  if (seg === "sponsor" || seg === "partner") return "sponsor";
+  if (seg === "sponsor" || seg === "partner" || seg === "partners") return "sponsor";
 
   const fromHash = window.location.hash
     .replace(/^#\/?/, "")
@@ -25,7 +25,7 @@ export function getRouteFromLocation(): AppRoute {
   if (fromHash) {
     const h = normalizeSegment(fromHash);
     if (h === "teams") return "teams";
-    if (h === "sponsor" || h === "partner") return "sponsor";
+    if (h === "sponsor" || h === "partner" || h === "partners") return "sponsor";
   }
 
   return "home";

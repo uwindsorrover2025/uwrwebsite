@@ -13,6 +13,7 @@ export function buildDOM(): void {
     <li><a href="./">Home</a></li>
     <li><a href="#about">About</a></li>
     <li><a href="#sponsors">Sponsors</a></li>
+    <li><a href="./partners">Partner</a></li>
     <li><a href="#contact">Contact</a></li>
     <li><a href="./teams">Team</a></li>
   </ul>
@@ -151,7 +152,7 @@ export function buildDOM(): void {
       The teams and companies below help us machine parts, travel to competition, and keep the rover testing when it counts.
     </p>
     ${buildSponsorsMarkup()}
-    <p class="sponsors-cta"><a href="./partner" class="inline-link">Become a partner →</a></p>
+    <p class="sponsors-cta"><a href="./partners" class="inline-link">Become a partner →</a></p>
   </div>
 </section>
 
@@ -179,7 +180,7 @@ export function buildDOM(): void {
           <li>Competition day recognition</li>
           <li>Social media + web presence</li>
         </ul>
-        <a href="./partner" class="cta-btn">Sponsor Us →</a>
+        <a href="./partners" class="cta-btn">Sponsor Us →</a>
       </div>
 
       <div class="contact-card contact-card--primary">
