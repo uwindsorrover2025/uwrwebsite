@@ -37,7 +37,7 @@ export function mountTeams(): void {
   <div class="hud">
     <div class="scroll-hint" id="scroll-hint">
       <div class="bounce-arrow">↓</div>
-      <span>Scroll to explore</span>
+      <span>Scroll to Explore</span>
     </div>
     <div class="progress-track">
       <div class="progress-fill" id="progress-fill"></div>
