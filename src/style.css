@@ -912,6 +912,25 @@ a.card-team-in:hover {
   padding: 0;
 }
 
+@media (min-width: 1120px) {
+  .sponsors-grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+
+  /* If the final row has 3 items, center them in columns 2-4. */
+  .sponsors-grid > .sponsors-item:nth-last-child(3):nth-child(5n + 1) {
+    grid-column: 2;
+  }
+
+  .sponsors-grid > .sponsors-item:nth-last-child(2):nth-child(5n + 2) {
+    grid-column: 3;
+  }
+
+  .sponsors-grid > .sponsors-item:last-child:nth-child(5n + 3) {
+    grid-column: 4;
+  }
+}
+
 .sponsors-item {
   margin: 0;
   width: 100%;
